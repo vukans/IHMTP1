@@ -1,7 +1,5 @@
 package com.iup.tp.twitup.core;
 
-import java.io.File;
-
 import com.iup.tp.twitup.datamodel.Database;
 import com.iup.tp.twitup.datamodel.IDatabase;
 import com.iup.tp.twitup.events.file.IWatchableDirectory;
@@ -9,9 +7,11 @@ import com.iup.tp.twitup.events.file.WatchableDirectory;
 import com.iup.tp.twitup.ihm.TwitupMainView;
 import com.iup.tp.twitup.ihm.TwitupMock;
 
+import java.io.File;
+
 /**
  * Classe principale l'application.
- * 
+ *
  * @author S.Lucas
  */
 public class Twitup {
@@ -82,7 +82,8 @@ public class Twitup {
 	 * Initialisation de l'interface graphique.
 	 */
 	protected void initGui() {
-		// this.mMainView...
+		mMainView = new TwitupMainView("Logo et titre");
+		mMainView.showGUI();
 	}
 
 	/**
@@ -97,9 +98,8 @@ public class Twitup {
 	/**
 	 * Indique si le fichier donné est valide pour servire de répertoire
 	 * d'échange
-	 * 
-	 * @param directory
-	 *            , Répertoire à tester.
+	 *
+	 * @param directory , Répertoire à tester.
 	 */
 	protected boolean isValideExchangeDirectory(File directory) {
 		// Valide si répertoire disponible en lecture et écriture
@@ -125,7 +125,7 @@ public class Twitup {
 
 	/**
 	 * Initialisation du répertoire d'échange.
-	 * 
+	 *
 	 * @param directoryPath
 	 */
 	public void initDirectory(String directoryPath) {
