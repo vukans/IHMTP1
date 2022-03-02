@@ -2,10 +2,10 @@ package com.iup.tp.twitup.core;
 
 import com.iup.tp.twitup.events.file.IWatchableDirectory;
 import com.iup.tp.twitup.events.file.WatchableDirectory;
-import com.iup.tp.twitup.model.Database;
-import com.iup.tp.twitup.model.IDatabase;
-import com.iup.tp.twitup.model.ILoginObserver;
-import com.iup.tp.twitup.view.MainView;
+import com.iup.tp.twitup.datamodel.Database;
+import com.iup.tp.twitup.datamodel.IDatabase;
+import com.iup.tp.twitup.datamodel.INavigationObserver;
+import com.iup.tp.twitup.view.*;
 import com.iup.tp.twitup.view.mock.TwitupMock;
 
 import javax.swing.*;
@@ -16,7 +16,7 @@ import java.io.File;
  *
  * @author S.Lucas
  */
-public class Twitup {
+public class Twitup implements INavigationObserver {
 	/**
 	 * Base de données.
 	 */
@@ -30,7 +30,7 @@ public class Twitup {
 	/**
 	 * Vue principale de l'application.
 	 */
-	protected MainView mMainView;
+	protected TwitupView mMainView;
 
 	/**
 	 * Classe de surveillance de répertoire
@@ -89,7 +89,9 @@ public class Twitup {
 	 * Initialisation de l'interface graphique.
 	 */
 	protected void initGui() {
-		mMainView = new MainView();
+		mMainView = new TwitupView();
+		mMainView.getContentPane().add(new WelcomeView(mExchangeDirectoryPath));
+		mMainView.addNavigationObserver(this);
 		mMainView.showGUI();
 	}
 
@@ -144,9 +146,43 @@ public class Twitup {
 
 		mWatchableDirectory.initWatching();
 		mWatchableDirectory.addObserver(mEntityManager);
+		System.out.println(mExchangeDirectoryPath);
 	}
 
 	public void show() {
 		// ... setVisible?
+	}
+
+	@Override
+	public void loadWelcomeView() {
+		loadView(new WelcomeView(mExchangeDirectoryPath));
+	}
+
+	@Override
+	public void loadAboutView() {
+		loadView(new AboutView());
+	}
+
+	@Override
+	public void loadLoginView() {
+		SignInController loginObserver = new SignInController();
+		SignInView loginView = new SignInView();
+		loginView.addController(loginObserver);
+		loadView(loginView);
+	}
+
+	@Override
+	public void loadSignUp() {
+		SignUpController signUpController = new SignUpController(mEntityManager, mDatabase);
+		SignUpView signUpView = new SignUpView();
+		signUpView.addController(signUpController);
+		loadView(signUpView);
+	}
+
+	private void loadView(ViewBase viewBase) {
+		mMainView.getContentPane().removeAll();
+		mMainView.getContentPane().add(viewBase);
+		mMainView.revalidate();
+		mMainView.repaint();
 	}
 }

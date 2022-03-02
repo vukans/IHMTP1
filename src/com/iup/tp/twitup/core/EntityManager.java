@@ -8,14 +8,14 @@ import java.util.Set;
 import java.util.UUID;
 
 import com.iup.tp.twitup.common.Constants;
-import com.iup.tp.twitup.model.IDatabase;
-import com.iup.tp.twitup.model.Twit;
-import com.iup.tp.twitup.model.User;
-import com.iup.tp.twitup.model.converter.XmlbeanDatamodelConverter;
-import com.iup.tp.twitup.model.jaxb.JaxbReader;
-import com.iup.tp.twitup.model.jaxb.JaxbWriter;
-import com.iup.tp.twitup.model.jaxb.bean.twit.TwitXml;
-import com.iup.tp.twitup.model.jaxb.bean.user.UserXml;
+import com.iup.tp.twitup.datamodel.IDatabase;
+import com.iup.tp.twitup.datamodel.Twit;
+import com.iup.tp.twitup.datamodel.User;
+import com.iup.tp.twitup.datamodel.converter.XmlbeanDatamodelConverter;
+import com.iup.tp.twitup.datamodel.jaxb.JaxbReader;
+import com.iup.tp.twitup.datamodel.jaxb.JaxbWriter;
+import com.iup.tp.twitup.datamodel.jaxb.bean.twit.TwitXml;
+import com.iup.tp.twitup.datamodel.jaxb.bean.user.UserXml;
 import com.iup.tp.twitup.events.file.IWatchableDirectoryObserver;
 
 /**

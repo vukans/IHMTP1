@@ -17,9 +17,9 @@ import javax.swing.JLabel;
 import javax.swing.SwingUtilities;
 
 import com.iup.tp.twitup.core.EntityManager;
-import com.iup.tp.twitup.model.IDatabase;
-import com.iup.tp.twitup.model.Twit;
-import com.iup.tp.twitup.model.User;
+import com.iup.tp.twitup.datamodel.IDatabase;
+import com.iup.tp.twitup.datamodel.Twit;
+import com.iup.tp.twitup.datamodel.User;
 
 public class TwitupMock {
 

@@ -1,8 +1,8 @@
 package com.iup.tp.twitup.core;
 
-import com.iup.tp.twitup.model.IDatabaseObserver;
-import com.iup.tp.twitup.model.Twit;
-import com.iup.tp.twitup.model.User;
+import com.iup.tp.twitup.datamodel.IDatabaseObserver;
+import com.iup.tp.twitup.datamodel.Twit;
+import com.iup.tp.twitup.datamodel.User;
 
 public class DatabaseObserver implements IDatabaseObserver {
 
