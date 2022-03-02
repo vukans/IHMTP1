@@ -1,12 +1,14 @@
 package com.iup.tp.twitup.core;
 
-import com.iup.tp.twitup.datamodel.Database;
-import com.iup.tp.twitup.datamodel.IDatabase;
 import com.iup.tp.twitup.events.file.IWatchableDirectory;
 import com.iup.tp.twitup.events.file.WatchableDirectory;
-import com.iup.tp.twitup.ihm.TwitupMainView;
-import com.iup.tp.twitup.ihm.TwitupMock;
+import com.iup.tp.twitup.model.Database;
+import com.iup.tp.twitup.model.IDatabase;
+import com.iup.tp.twitup.model.ILoginObserver;
+import com.iup.tp.twitup.view.MainView;
+import com.iup.tp.twitup.view.mock.TwitupMock;
 
+import javax.swing.*;
 import java.io.File;
 
 /**
@@ -28,7 +30,7 @@ public class Twitup {
 	/**
 	 * Vue principale de l'application.
 	 */
-	protected TwitupMainView mMainView;
+	protected MainView mMainView;
 
 	/**
 	 * Classe de surveillance de répertoire
@@ -76,13 +78,18 @@ public class Twitup {
 	 * Initialisation du look and feel de l'application.
 	 */
 	protected void initLookAndFeel() {
+		try {
+			UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
+		} catch (UnsupportedLookAndFeelException | ClassNotFoundException | InstantiationException | IllegalAccessException ignored) {
+
+		}
 	}
 
 	/**
 	 * Initialisation de l'interface graphique.
 	 */
 	protected void initGui() {
-		mMainView = new TwitupMainView("Logo et titre");
+		mMainView = new MainView();
 		mMainView.showGUI();
 	}
 
@@ -93,6 +100,8 @@ public class Twitup {
 	 * pouvoir utiliser l'application</b>
 	 */
 	protected void initDirectory() {
+		String folder = this.mMainView.askDirectory();
+		this.initDirectory(folder);
 	}
 
 	/**

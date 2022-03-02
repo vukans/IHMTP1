@@ -21,15 +21,15 @@ public class FilesUtils {
 	 *            , Chemin du fichier de destination
 	 * @return un booléen indiquant si le déplacement s'est déroulé avec succès.
 	 */
-	public static boolean moveFile(File sourceFile, String destFileName) {
+	public static boolean moveFile(File sourceFileName, String destFileName) {
 		boolean isOk = false;
 
 		// Copie du fichier
-		isOk = copyFile(sourceFile.getAbsolutePath(), destFileName);
+		isOk = copyFile(sourceFileName.getAbsolutePath(), destFileName);
 
 		// Si c'est bon, suppression de la source
 		if (isOk) {
-			sourceFile.delete();
+			sourceFileName.delete();
 		}
 
 		return isOk;
