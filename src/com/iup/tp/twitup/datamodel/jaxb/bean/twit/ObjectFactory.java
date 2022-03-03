@@ -21,7 +21,7 @@ import javax.xml.namespace.QName;
  * can consist of schema derived interfaces and classes representing the binding
  * of schema type definitions, element declarations and model groups. Factory
  * methods for each of these are provided in this class.
- * 
+ *
  */
 @XmlRegistry
 public class ObjectFactory {
@@ -31,14 +31,14 @@ public class ObjectFactory {
 	/**
 	 * Create a new ObjectFactory that can be used to create new instances of
 	 * schema derived classes for package: com.iup.tp.twitup.jaxb.bean.twit
-	 * 
+	 *
 	 */
 	public ObjectFactory() {
 	}
 
 	/**
 	 * Create an instance of {@link TwitXml }
-	 * 
+	 *
 	 */
 	public TwitXml createTwitXml() {
 		return new TwitXml();
@@ -47,7 +47,7 @@ public class ObjectFactory {
 	/**
 	 * Create an instance of {@link JAXBElement }{@code <}{@link TwitXml }
 	 * {@code >}}
-	 * 
+	 *
 	 */
 	@XmlElementDecl(namespace = "http://www.example.org/twit/", name = "Twit")
 	public JAXBElement<TwitXml> createTwit(TwitXml value) {

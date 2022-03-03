@@ -5,8 +5,8 @@ import com.iup.tp.twitup.events.file.WatchableDirectory;
 import com.iup.tp.twitup.datamodel.Database;
 import com.iup.tp.twitup.datamodel.IDatabase;
 import com.iup.tp.twitup.datamodel.INavigationObserver;
-import com.iup.tp.twitup.view.*;
-import com.iup.tp.twitup.view.mock.TwitupMock;
+import com.iup.tp.twitup.ihm.*;
+import com.iup.tp.twitup.ihm.TwitupMock;
 
 import javax.swing.*;
 import java.io.File;
@@ -30,7 +30,7 @@ public class Twitup implements INavigationObserver {
 	/**
 	 * Vue principale de l'application.
 	 */
-	protected TwitupView mMainView;
+	protected TwitupMainView mMainView;
 
 	/**
 	 * Classe de surveillance de répertoire
@@ -89,7 +89,7 @@ public class Twitup implements INavigationObserver {
 	 * Initialisation de l'interface graphique.
 	 */
 	protected void initGui() {
-		mMainView = new TwitupView();
+		mMainView = new TwitupMainView();
 		mMainView.getContentPane().add(new WelcomeView(mExchangeDirectoryPath));
 		mMainView.addNavigationObserver(this);
 		mMainView.showGUI();

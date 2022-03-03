@@ -12,13 +12,13 @@ import com.iup.tp.twitup.datamodel.jaxb.bean.user.UserXml;
 
 /**
  * Classe de génération des fichiers XML.
- * 
+ *
  * @author S.Lucas
  */
 public class JaxbWriter {
 	/**
 	 * Génération d'un fichier pour un twit ({@link TwitXml}).
-	 * 
+	 *
 	 * @param twit
 	 *            , TwitXml à générer.
 	 * @param destFileName
@@ -31,7 +31,7 @@ public class JaxbWriter {
 
 	/**
 	 * Génération d'un fichier pour un utilisateur ({@link UserXml}).
-	 * 
+	 *
 	 * @param user
 	 *            , UserXml à générer.
 	 * @param destFileName
@@ -44,7 +44,7 @@ public class JaxbWriter {
 
 	/**
 	 * Génération d'un fichier XML correspondant à un objet.
-	 * 
+	 *
 	 * @param jaxbContext
 	 *            , Contexte JAXB pour le marshalling
 	 * @param objectToMarshal

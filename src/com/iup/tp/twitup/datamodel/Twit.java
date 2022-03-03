@@ -4,11 +4,13 @@ import java.util.HashSet;
 import java.util.Set;
 import java.util.UUID;
 
+import javax.naming.ldap.HasControls;
+
 import com.iup.tp.twitup.common.Constants;
 
 /**
  * Classe du modèle représentant un twit.
- * 
+ *
  * @author S.Lucas
  */
 public class Twit {
@@ -44,7 +46,7 @@ public class Twit {
 
 	/**
 	 * Constructeur.
-	 * 
+	 *
 	 * @param twiter utilisateur à l'origine du twit.
 	 * @param text   , corps du message.
 	 */
@@ -54,7 +56,7 @@ public class Twit {
 
 	/**
 	 * Constructeur.
-	 * 
+	 *
 	 * @param twitUuid     , identifiant du twit.
 	 * @param twiter       , utilisateur à l'origine du twit.
 	 * @param emissionDate , date d'émission du twit.
@@ -88,7 +90,7 @@ public class Twit {
 	/**
 	 * Retourne les tags présents dans le texte en fonction du caractère de
 	 * détection.
-	 * 
+	 *
 	 * @param text         , Texte à analyser.
 	 * @param tagDelimiter , Caractère de délimitation des tags à rechercher.
 	 */
@@ -171,7 +173,7 @@ public class Twit {
 
 	/**
 	 * Indique si le Twit possède le tag donné.
-	 * 
+	 *
 	 * @param aTag , tag à rechercher.
 	 */
 	public boolean containsTag(String aTag) {
@@ -180,7 +182,7 @@ public class Twit {
 
 	/**
 	 * Indique si le Twit possède le tag utilisateur donné.
-	 * 
+	 *
 	 * @param anUserTag , tag utilisateur à rechercher.
 	 */
 	public boolean containsUserTag(String anUserTag) {

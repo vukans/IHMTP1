@@ -14,14 +14,14 @@ import com.iup.tp.twitup.datamodel.jaxb.bean.user.UserXml;
 /**
  * Classe de gestion des conversion des objets entre le datamodle et les bean
  * XML.
- * 
+ *
  * @author S.Lucas
  */
 public class XmlbeanDatamodelConverter {
 
 	/**
 	 * Conversion du modèle de donnée vers le bean du fichier XML.
-	 * 
+	 *
 	 * @param twitToConvert
 	 */
 	public static TwitXml convertAsXmlTwit(Twit twitToConvert) {
@@ -37,7 +37,7 @@ public class XmlbeanDatamodelConverter {
 	/**
 	 * Conversion du fichier XML vers le modèle de donnée.<br/>
 	 * <i>NB, La map doit au moins contenir l'utilisateur inconnu</i>
-	 * 
+	 *
 	 * @param twitToConvert
 	 *            , Twit à convertir.
 	 * @param userMap
@@ -58,7 +58,7 @@ public class XmlbeanDatamodelConverter {
 
 	/**
 	 * Conversion du modèle de donnée vers le bean du fichier XML.
-	 * 
+	 *
 	 * @param userToConvert
 	 */
 	public static UserXml convertAsXmlUser(User userToConvert) {
@@ -78,7 +78,7 @@ public class XmlbeanDatamodelConverter {
 
 	/**
 	 * Conversion du fichier XML vers le modèle de donnée.
-	 * 
+	 *
 	 * @param userToConvert
 	 */
 	public static User convertAsModelUser(UserXml userToConvert) {

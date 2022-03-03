@@ -16,11 +16,11 @@ import javax.xml.bind.annotation.XmlType;
 /**
  * <p>
  * Java class for TwitXml complex type.
- * 
+ *
  * <p>
  * The following schema fragment specifies the expected content contained within
  * this class.
- * 
+ *
  * <pre>
  * &lt;complexType name="TwitXml">
  *   &lt;complexContent>
@@ -35,8 +35,8 @@ import javax.xml.bind.annotation.XmlType;
  *   &lt;/complexContent>
  * &lt;/complexType>
  * </pre>
- * 
- * 
+ *
+ *
  */
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(name = "TwitXml", propOrder = { "id", "emissionDate", "twiter", "text" })
@@ -54,9 +54,9 @@ public class TwitXml {
 
 	/**
 	 * Gets the value of the id property.
-	 * 
+	 *
 	 * @return possible object is {@link String }
-	 * 
+	 *
 	 */
 	public String getID() {
 		return id;
@@ -64,10 +64,10 @@ public class TwitXml {
 
 	/**
 	 * Sets the value of the id property.
-	 * 
+	 *
 	 * @param value
 	 *            allowed object is {@link String }
-	 * 
+	 *
 	 */
 	public void setID(String value) {
 		this.id = value;
@@ -75,7 +75,7 @@ public class TwitXml {
 
 	/**
 	 * Gets the value of the emissionDate property.
-	 * 
+	 *
 	 */
 	public long getEmissionDate() {
 		return emissionDate;
@@ -83,7 +83,7 @@ public class TwitXml {
 
 	/**
 	 * Sets the value of the emissionDate property.
-	 * 
+	 *
 	 */
 	public void setEmissionDate(long value) {
 		this.emissionDate = value;
@@ -91,9 +91,9 @@ public class TwitXml {
 
 	/**
 	 * Gets the value of the twiter property.
-	 * 
+	 *
 	 * @return possible object is {@link String }
-	 * 
+	 *
 	 */
 	public String getTwiter() {
 		return twiter;
@@ -101,10 +101,10 @@ public class TwitXml {
 
 	/**
 	 * Sets the value of the twiter property.
-	 * 
+	 *
 	 * @param value
 	 *            allowed object is {@link String }
-	 * 
+	 *
 	 */
 	public void setTwiter(String value) {
 		this.twiter = value;
@@ -112,9 +112,9 @@ public class TwitXml {
 
 	/**
 	 * Gets the value of the text property.
-	 * 
+	 *
 	 * @return possible object is {@link String }
-	 * 
+	 *
 	 */
 	public String getText() {
 		return text;
@@ -122,10 +122,10 @@ public class TwitXml {
 
 	/**
 	 * Sets the value of the text property.
-	 * 
+	 *
 	 * @param value
 	 *            allowed object is {@link String }
-	 * 
+	 *
 	 */
 	public void setText(String value) {
 		this.text = value;

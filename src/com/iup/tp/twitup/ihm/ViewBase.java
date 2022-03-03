@@ -1,4 +1,4 @@
-package com.iup.tp.twitup.view;
+package com.iup.tp.twitup.ihm;
 
 import javax.swing.*;
 

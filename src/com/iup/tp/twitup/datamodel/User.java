@@ -44,11 +44,16 @@ public class User {
 	/**
 	 * Constructeur.
 	 *
-	 * @param uuid       , Identifiant unique de l'utilisateur.
-	 * @param userTag    , Tag correspondant à l'utilisateur.
-	 * @param name       , Nom de l'utilisateur.
-	 * @param follows    , Liste des tags suivis.
-	 * @param avatarPath , Chemin d'accès à l'image de l'avatar.
+	 * @param uuid
+	 *            , Identifiant unique de l'utilisateur.
+	 * @param userTag
+	 *            , Tag correspondant à l'utilisateur.
+	 * @param name
+	 *            , Nom de l'utilisateur.
+	 * @param follows
+	 *            , Liste des tags suivis.
+	 * @param avatarPath
+	 *            , Chemin d'accès à l'image de l'avatar.
 	 */
 	public User(UUID uuid, String userTag, String userPassword, String name, Set<String> follows, String avatarPath) {
 		mUuid = uuid;
@@ -116,7 +121,8 @@ public class User {
 	/**
 	 * Retire un tag de la liste des tags suivis.
 	 *
-	 * @param tagToRemove , tag à retirer.
+	 * @param tagToRemove
+	 *            , tag à retirer.
 	 */
 	public void removeFollowing(String tagToRemove) {
 		this.mFollows.remove(tagToRemove);
@@ -125,7 +131,8 @@ public class User {
 	/**
 	 * Ajout un tag de la liste des tags suivis.
 	 *
-	 * @param tagToFollow , tag à ajouter.
+	 * @param tagToFollow
+	 *            , tag à ajouter.
 	 */
 	public void addFollowing(String tagToFollow) {
 		this.mFollows.add(tagToFollow);

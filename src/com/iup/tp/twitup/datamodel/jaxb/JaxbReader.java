@@ -11,7 +11,7 @@ import com.iup.tp.twitup.datamodel.jaxb.bean.user.UserXml;
 
 /**
  * Classe de lecture des fichiers XML.
- * 
+ *
  * @author S.Lucas
  */
 public class JaxbReader {
@@ -24,7 +24,7 @@ public class JaxbReader {
 
 	/**
 	 * Lecture du fichier XML pour un {@link TwitXml}
-	 * 
+	 *
 	 * @param twitFileName
 	 */
 	public static TwitXml readTwit(String twitFileName) {
@@ -39,7 +39,7 @@ public class JaxbReader {
 
 	/**
 	 * Lecture du fichier XML pour un {@link UserXml}
-	 * 
+	 *
 	 * @param twitFileName
 	 */
 	public static UserXml readUser(String userFileName) {
@@ -54,7 +54,7 @@ public class JaxbReader {
 
 	/**
 	 * Unmarshalling du fichier XML
-	 * 
+	 *
 	 * @param xmlFileName
 	 *            , Fichier XML à lire
 	 * @param beanPackage

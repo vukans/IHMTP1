@@ -1,4 +1,4 @@
-package com.iup.tp.twitup.view.mock;
+package com.iup.tp.twitup.ihm;
 
 import java.awt.Button;
 import java.awt.Dimension;

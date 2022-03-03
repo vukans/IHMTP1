@@ -1,4 +1,4 @@
-package com.iup.tp.twitup.view;
+package com.iup.tp.twitup.ihm;
 
 import com.iup.tp.twitup.datamodel.INavigationObserver;
 
@@ -9,11 +9,11 @@ import java.util.List;
 /**
  * Classe de la vue principale de l'application.
  */
-public class TwitupView extends JFrame {
+public class TwitupMainView extends JFrame {
 
 	private List<INavigationObserver> navigationObservers;
 
-	public TwitupView() {
+	public TwitupMainView() {
 		super("Le twitter du McDonald's du patelin");
 
 		navigationObservers = new ArrayList<>();
