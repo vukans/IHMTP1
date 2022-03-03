@@ -6,7 +6,9 @@ public interface INavigationObserver {
 
 	void loadAboutView();
 
-	void loadLoginView();
+	void loadSignInView();
 
 	void loadSignUp();
+
+	void exit();
 }

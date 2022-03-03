@@ -1,12 +1,11 @@
 package com.iup.tp.twitup.core;
 
-import com.iup.tp.twitup.events.file.IWatchableDirectory;
-import com.iup.tp.twitup.events.file.WatchableDirectory;
 import com.iup.tp.twitup.datamodel.Database;
 import com.iup.tp.twitup.datamodel.IDatabase;
 import com.iup.tp.twitup.datamodel.INavigationObserver;
+import com.iup.tp.twitup.events.file.IWatchableDirectory;
+import com.iup.tp.twitup.events.file.WatchableDirectory;
 import com.iup.tp.twitup.ihm.*;
-import com.iup.tp.twitup.ihm.TwitupMock;
 
 import javax.swing.*;
 import java.io.File;
@@ -164,11 +163,13 @@ public class Twitup implements INavigationObserver {
 	}
 
 	@Override
-	public void loadLoginView() {
-		SignInController loginObserver = new SignInController();
-		SignInView loginView = new SignInView();
-		loginView.addController(loginObserver);
-		loadView(loginView);
+	public void loadSignInView() {
+		SignInController signInController = new SignInController(mDatabase);
+		SignInView signInView = new SignInView();
+		signInView.addSIgnInController(signInController);
+		signInView.addNavigationObserver(this);
+		signInController.addSignedInObserver(signInView);
+		loadView(signInView);
 	}
 
 	@Override
@@ -176,7 +177,13 @@ public class Twitup implements INavigationObserver {
 		SignUpController signUpController = new SignUpController(mEntityManager, mDatabase);
 		SignUpView signUpView = new SignUpView();
 		signUpView.addController(signUpController);
+		signUpController.addSignedUpObserver(signUpView);
 		loadView(signUpView);
+	}
+
+	@Override
+	public void exit() {
+		System.exit(0);
 	}
 
 	private void loadView(ViewBase viewBase) {

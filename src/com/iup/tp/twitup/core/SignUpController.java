@@ -2,34 +2,48 @@ package com.iup.tp.twitup.core;
 
 import com.iup.tp.twitup.datamodel.IDatabase;
 import com.iup.tp.twitup.datamodel.ISignUpController;
+import com.iup.tp.twitup.datamodel.ISignedUpObserver;
 import com.iup.tp.twitup.datamodel.User;
 
-import java.util.HashSet;
-import java.util.Set;
-import java.util.UUID;
+import java.util.*;
 import java.util.stream.Collectors;
 
 public class SignUpController implements ISignUpController {
 
-	private EntityManager entityManager;
-	private IDatabase database;
+	private final List<ISignedUpObserver> signedUpObservers;
+
+	private final EntityManager entityManager;
+	private final IDatabase database;
 
 	public SignUpController(EntityManager entityManager, IDatabase database) {
+		signedUpObservers = new ArrayList<>();
+
 		this.entityManager = entityManager;
 		this.database = database;
 	}
 
 	@Override
-	public boolean notifyRegisterUser(String username, String password) {
-		boolean bool = false;
-		UUID uuid = UUID.randomUUID();
-		User user = new User(uuid, "@" + username, password, username, new HashSet<>(), "");
-		Set<User> users = database.getUsers().stream().filter(res -> res.getName().equals(username)).collect(Collectors.toSet());
-		if (users.isEmpty()) {
-			database.addUser(user);
-			entityManager.sendUser(user);
-			bool = true;
+	public void notifyRegisterUser(String tag, String username, String password) {
+		if (tag == null || tag.length() < 4 ||
+				username == null || password == null ||
+				username.length() < 4 || password.length() < 6) {
+			signedUpObservers.forEach(ISignedUpObserver::notifyWrongInputs);
+		} else {
+			UUID uuid = UUID.randomUUID();
+			User user = new User(uuid, tag, password, username, new HashSet<>(), "");
+			Set<User> users = database.getUsers().stream().filter(res -> res.getUserTag().equals(tag)).collect(Collectors.toSet());
+
+			if (users.isEmpty()) {
+				entityManager.sendUser(user);
+				signedUpObservers.forEach(res -> res.notifyUserCreated(user));
+			} else {
+				signedUpObservers.forEach(res -> res.notifyUserAlreadyExists(user));
+			}
 		}
-		return bool;
+	}
+
+	public void addSignedUpObserver(ISignedUpObserver signedUpObserver) {
+		signedUpObservers.add(signedUpObserver);
 	}
 }
+

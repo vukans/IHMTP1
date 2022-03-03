@@ -11,7 +11,7 @@ import java.util.List;
  */
 public class TwitupMainView extends JFrame {
 
-	private List<INavigationObserver> navigationObservers;
+	private final List<INavigationObserver> navigationObservers;
 
 	public TwitupMainView() {
 		super("Le twitter du McDonald's du patelin");
@@ -42,7 +42,7 @@ public class TwitupMainView extends JFrame {
 
 		JMenuItem mcChicken = new JMenuItem("Mc Chicken");
 		mcChicken.setIcon(new ImageIcon("src/resources/images/mc chicken.png"));
-		mcChicken.addActionListener((e) -> exitApplication());
+		mcChicken.addActionListener((e) -> notifyExitObservers());
 
 		menu.add(dips);
 		menu.add(bigMac);
@@ -54,7 +54,7 @@ public class TwitupMainView extends JFrame {
 
 		setJMenuBar(bar);
 
-		setSize(606, 400);
+		setSize(950, 600);
 		setLocationRelativeTo(null);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 	}
@@ -64,7 +64,6 @@ public class TwitupMainView extends JFrame {
 	}
 
 	public String askDirectory() {
-		String filePath = "";
 		JFileChooser chooser = new JFileChooser();
 		chooser.setDialogTitle("PRend dosser");
 		chooser.setAcceptAllFileFilterUsed(false);
@@ -72,11 +71,11 @@ public class TwitupMainView extends JFrame {
 		int res = chooser.showOpenDialog(null);
 		if (res == JFileChooser.APPROVE_OPTION) {
 			System.out.println("You chose to open this file: " + chooser.getSelectedFile().getName());
-			filePath = chooser.getSelectedFile().toString();
+			return chooser.getSelectedFile().toString();
 		} else {
-			exitApplication();
+			notifyExitObservers();
+			return null;
 		}
-		return filePath;
 	}
 
 	private void notifyWelcomeViewObservers() {
@@ -88,18 +87,18 @@ public class TwitupMainView extends JFrame {
 	}
 
 	private void notifySignInObservers() {
-		navigationObservers.forEach(INavigationObserver::loadLoginView);
+		navigationObservers.forEach(INavigationObserver::loadSignInView);
 	}
 
 	private void notifySignUpObservers() {
 		navigationObservers.forEach(INavigationObserver::loadSignUp);
 	}
 
-	public void addNavigationObserver(INavigationObserver navigationObserver) {
-		navigationObservers.add(navigationObserver);
+	private void notifyExitObservers() {
+		navigationObservers.forEach(INavigationObserver::exit);
 	}
 
-	private void exitApplication() {
-		System.exit(0);
+	public void addNavigationObserver(INavigationObserver navigationObserver) {
+		navigationObservers.add(navigationObserver);
 	}
 }
