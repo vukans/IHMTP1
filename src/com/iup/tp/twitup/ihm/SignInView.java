@@ -1,9 +1,8 @@
 package com.iup.tp.twitup.ihm;
 
-import com.iup.tp.twitup.datamodel.INavigationObserver;
-import com.iup.tp.twitup.datamodel.ISignInController;
-import com.iup.tp.twitup.datamodel.ISignedInObserver;
-import com.iup.tp.twitup.datamodel.User;
+import com.iup.tp.twitup.observer.navigation.INavigationObserver;
+import com.iup.tp.twitup.observer.session.ISessionObserver;
+import com.iup.tp.twitup.observer.session.ISignedInObserver;
 
 import javax.swing.*;
 import java.awt.*;
@@ -13,116 +12,120 @@ import java.util.List;
 public class SignInView extends ViewBase implements ISignedInObserver {
 
 	private final List<INavigationObserver> navigationObservers;
-	private final List<ISignInController> signInControllers;
+	private final List<ISessionObserver> sessionObservers;
 
-	private final JTextField tag;
-	private final JPasswordField password;
-	private final JLabel info;
+	private final JTextField tague;
+	private final JPasswordField depecheModePasse;
+	private final JLabel infos;
 
 	public SignInView() {
 		super();
 
 		navigationObservers = new ArrayList<>();
-		signInControllers = new ArrayList<>();
+		sessionObservers = new ArrayList<>();
 
 		setLayout(new GridBagLayout());
 
 		JLabel title = new JLabel("Coneksession");
-		title.setFont(title.getFont().deriveFont(32.0F));
+		title.setFont(title.getFont().deriveFont(48.0F));
 
-		ImageIcon tague = new ImageIcon("src/resources/images/tag.png");
-		JLabel tagText = new JLabel("Tague", tague, JLabel.CENTER);
-		tag = new JTextField(50);
+		ImageIcon tagueImg = new ImageIcon("src/resources/images/tague.png");
+		JLabel tagueText = new JLabel("Tague :", tagueImg, JLabel.CENTER);
+		tagueText.setFont(title.getFont().deriveFont(14.0F));
+		tague = new JTextField(20);
 
-		ImageIcon mode = new ImageIcon("src/resources/images/mode.png");
-		JLabel passwordText = new JLabel("Depeche Mode passe", mode, JLabel.CENTER);
-		password = new JPasswordField(50);
+		ImageIcon depecheModePasseImg = new ImageIcon("src/resources/images/depechemodepasse.png");
+		JLabel depecheModePasseText = new JLabel("Depeche Mode-passe :", depecheModePasseImg, JLabel.CENTER);
+		depecheModePasseText.setFont(title.getFont().deriveFont(14.0F));
+		depecheModePasse = new JPasswordField(20);
 
-		JButton connect = new JButton("Se connecter");
-		connect.addActionListener((e) -> doLogin(tag.getText(), String.valueOf(password.getPassword())));
+		JButton signIn = new JButton("Se coneckthé");
+		signIn.addActionListener((e) -> doLogin(tague.getText(), String.valueOf(depecheModePasse.getPassword())));
 
 		JButton cancel = new JButton("NON.");
 		cancel.addActionListener((e) -> doCancel());
 
-		add(title, new GridBagConstraints(0, 0, 1, 6, 1, 1,
+		infos = new JLabel();
+
+		add(title, new GridBagConstraints(0, 0, 2, 1, 0, 0,
+				GridBagConstraints.CENTER,
+				GridBagConstraints.NONE,
+				new Insets(25, 25, 25, 25),
+				0, 0));
+
+		add(tagueText, new GridBagConstraints(0, 1, 1, 1, 0, 0,
+				GridBagConstraints.EAST,
+				GridBagConstraints.NONE,
+				new Insets(5, 5, 5, 5),
+				0, 0));
+
+		add(tague, new GridBagConstraints(1, 1, 1, 1, 0, 0,
 				GridBagConstraints.CENTER,
 				GridBagConstraints.NONE,
 				new Insets(5, 5, 5, 5),
 				0, 0));
 
-		add(tagText, new GridBagConstraints(0, 10, 1, 6, 1, 1,
+		add(depecheModePasseText, new GridBagConstraints(0, 2, 1, 1, 0, 0,
+				GridBagConstraints.EAST,
+				GridBagConstraints.NONE,
+				new Insets(5, 5, 5, 5),
+				0, 0));
+
+		add(depecheModePasse, new GridBagConstraints(1, 2, 1, 1, 0, 0,
 				GridBagConstraints.CENTER,
 				GridBagConstraints.NONE,
 				new Insets(5, 5, 5, 5),
 				0, 0));
 
-		add(tag, new GridBagConstraints(0, 20, 1, 6, 1, 1,
+		add(signIn, new GridBagConstraints(0, 3, 1, 1, 0, 0,
 				GridBagConstraints.CENTER,
 				GridBagConstraints.NONE,
 				new Insets(5, 5, 5, 5),
 				0, 0));
 
-		add(passwordText, new GridBagConstraints(0, 30, 1, 6, 1, 1,
+		add(cancel, new GridBagConstraints(1, 3, 1, 1, 0, 0,
 				GridBagConstraints.CENTER,
 				GridBagConstraints.NONE,
 				new Insets(5, 5, 5, 5),
 				0, 0));
 
-		add(password, new GridBagConstraints(0, 40, 1, 6, 1, 1,
+		add(infos, new GridBagConstraints(0, 4, 2, 1, 0, 0,
 				GridBagConstraints.CENTER,
-				GridBagConstraints.NONE,
-				new Insets(5, 5, 5, 5),
-				0, 0));
-
-		add(connect, new GridBagConstraints(0, 50, 1, 6, 1, 1,
-				GridBagConstraints.CENTER,
-				GridBagConstraints.NONE,
-				new Insets(5, 5, 5, 5),
-				0, 0));
-
-		add(cancel, new GridBagConstraints(0, 60, 1, 6, 1, 1,
-				GridBagConstraints.CENTER,
-				GridBagConstraints.NONE,
-				new Insets(5, 5, 5, 5),
-				0, 0));
-
-		info = new JLabel();
-
-		add(info, new GridBagConstraints(0, 70, 1, 6, 1, 1, GridBagConstraints.CENTER, GridBagConstraints.NONE,
-				new Insets(5, 5, 5, 5),
+				GridBagConstraints.HORIZONTAL,
+				new Insets(15, 15, 15, 15),
 				0, 0));
 	}
 
-	private void doLogin(String username, String password) {
-		signInControllers.forEach(res -> res.notifyLogin(username, password));
+	private void doLogin(String tag, String password) {
+		sessionObservers.forEach(res -> res.notifySignIn(tag, password));
 	}
 
 	private void doCancel() {
+		navigationObservers.forEach(INavigationObserver::loadSignUpView);
+	}
+
+	@Override
+	public void notifySuccess() {
 		navigationObservers.forEach(INavigationObserver::loadWelcomeView);
 	}
 
-	public void addSIgnInController(ISignInController signInController) {
-		signInControllers.add(signInController);
+	@Override
+	public void notifyError(String tag) {
+		infos.setText("G pa trouvé le CBO @" + tag + " dans le poulélé !");
+		infos.setIcon(new ImageIcon("src/resources/images/plant.png"));
+	}
+
+	@Override
+	public void notifyWrongInputs() {
+		infos.setText("Les champs ne sont pas correctement remplis, ils sont tout crlus !");
+		infos.setIcon(new ImageIcon("src/resources/images/raw.png"));
 	}
 
 	public void addNavigationObserver(INavigationObserver navigationObserver) {
 		navigationObservers.add(navigationObserver);
 	}
 
-	@Override
-	public void notifySuccess(User user) {
-		navigationObservers.forEach(INavigationObserver::loadWelcomeView);
-	}
-
-	@Override
-	public void notifyError(String tag) {
-		info.setText("G pa trouvé le CBO " + tag + " dans le poulélé !");
-		info.setIcon(new ImageIcon("src/resources/images/plant.png"));
-	}
-
-	@Override
-	public void notifyWrongInputs() {
-		info.setText("Les champs (du poulélé) ne sont pas correctement remplis, IL EST TOUT CRLU ! ;)");
-		info.setIcon(new ImageIcon("src/resources/images/chickenWrongInputs.png"));
+	public void addSessionObserver(ISessionObserver sessionObserver) {
+		sessionObservers.add(sessionObserver);
 	}
 }

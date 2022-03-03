@@ -1,6 +1,7 @@
 package com.iup.tp.twitup.ihm;
 
-import com.iup.tp.twitup.datamodel.INavigationObserver;
+import com.iup.tp.twitup.observer.navigation.INavigationObserver;
+import com.iup.tp.twitup.observer.session.IUserStateObserver;
 
 import javax.swing.*;
 import java.util.ArrayList;
@@ -9,9 +10,21 @@ import java.util.List;
 /**
  * Classe de la vue principale de l'application.
  */
-public class TwitupMainView extends JFrame {
+public class TwitupMainView extends JFrame implements IUserStateObserver {
 
 	private final List<INavigationObserver> navigationObservers;
+
+	private final JMenuBar bar;
+
+	private final JMenu menu;
+
+	private final JMenuItem welcome;
+	private final JMenuItem about;
+	private final JMenuItem profil;
+	private final JMenuItem signIn;
+	private final JMenuItem signUp;
+	private final JMenuItem logOut;
+	private final JMenuItem exit;
 
 	public TwitupMainView() {
 		super("Le twitter du McDonald's du patelin");
@@ -20,35 +33,47 @@ public class TwitupMainView extends JFrame {
 
 		setIconImage(new ImageIcon("src/resources/images/mcdo.png").getImage());
 
-		JMenuBar bar = new JMenuBar();
+		bar = new JMenuBar();
 
-		JMenu menu = new JMenu("Menu best of :");
+		menu = new JMenu("Menu BestOf ->");
 
-		JMenuItem dips = new JMenuItem("Dips");
-		dips.setIcon(new ImageIcon("src/resources/images/dips.png"));
-		dips.addActionListener((e) -> notifyWelcomeViewObservers());
+		welcome = new JMenuItem("BigMac"); // Welcome
+		welcome.setIcon(new ImageIcon("src/resources/images/bigmac.png"));
+		welcome.addActionListener((e) -> notifyWelcomeViewObservers());
 
-		JMenuItem bigMac = new JMenuItem("Big Mac");
-		bigMac.setIcon(new ImageIcon("src/resources/images/big mac.png"));
-		bigMac.addActionListener((e) -> notifyAboutViewObservers());
+		about = new JMenuItem("CauetBurger"); // About
+		about.setIcon(new ImageIcon("src/resources/images/cauet.png"));
+		about.addActionListener((e) -> notifyAboutViewObservers());
 
-		JMenuItem cbo = new JMenuItem("CBO");
-		cbo.setIcon(new ImageIcon("src/resources/images/cbo.png"));
-		cbo.addActionListener((e) -> notifySignInObservers());
+		profil = new JMenuItem("Tenders"); // Profil
+		profil.setIcon(new ImageIcon("src/resources/images/tenders.png"));
+		profil.addActionListener((e) -> notifyProfilObservers());
+		profil.setVisible(false);
 
-		JMenuItem whooper = new JMenuItem("Whooper");
-		whooper.setIcon(new ImageIcon("src/resources/images/whooper.png"));
-		whooper.addActionListener((e) -> notifySignUpObservers());
+		signIn = new JMenuItem("CBO"); // Connexion
+		signIn.setIcon(new ImageIcon("src/resources/images/cbo.png"));
+		signIn.addActionListener((e) -> notifySignInObservers());
 
-		JMenuItem mcChicken = new JMenuItem("Mc Chicken");
-		mcChicken.setIcon(new ImageIcon("src/resources/images/mc chicken.png"));
-		mcChicken.addActionListener((e) -> notifyExitObservers());
+		signUp = new JMenuItem("Whooper"); // Inscription
+		signUp.setIcon(new ImageIcon("src/resources/images/whooper.png"));
+		signUp.addActionListener((e) -> notifySignUpObservers());
 
-		menu.add(dips);
-		menu.add(bigMac);
-		menu.add(cbo);
-		menu.add(whooper);
-		menu.add(mcChicken);
+		logOut = new JMenuItem("McChicken"); // Déconnexion
+		logOut.setIcon(new ImageIcon("src/resources/images/mcchicken.png"));
+		logOut.addActionListener((e) -> notifyLogOutObservers());
+		logOut.setVisible(false);
+
+		exit = new JMenuItem("ChickenDips"); // Quitter
+		exit.setIcon(new ImageIcon("src/resources/images/dips.png"));
+		exit.addActionListener((e) -> notifyExitObservers());
+
+		menu.add(welcome);
+		menu.add(about);
+		menu.add(profil);
+		menu.add(signIn);
+		menu.add(signUp);
+		menu.add(logOut);
+		menu.add(exit);
 
 		bar.add(menu);
 
@@ -90,12 +115,36 @@ public class TwitupMainView extends JFrame {
 		navigationObservers.forEach(INavigationObserver::loadSignInView);
 	}
 
+	private void notifyLogOutObservers() {
+		navigationObservers.forEach(INavigationObserver::loadDisconnectView);
+	}
+
 	private void notifySignUpObservers() {
-		navigationObservers.forEach(INavigationObserver::loadSignUp);
+		navigationObservers.forEach(INavigationObserver::loadSignUpView);
+	}
+
+	private void notifyProfilObservers() {
+		navigationObservers.forEach(INavigationObserver::loadProfilView);
 	}
 
 	private void notifyExitObservers() {
 		navigationObservers.forEach(INavigationObserver::exit);
+	}
+
+	@Override
+	public void notifyIsConnected() {
+		profil.setVisible(true);
+		signIn.setVisible(false);
+		signUp.setVisible(false);
+		logOut.setVisible(true);
+	}
+
+	@Override
+	public void notifyIsDisconnected() {
+		profil.setVisible(false);
+		signIn.setVisible(true);
+		signUp.setVisible(true);
+		logOut.setVisible(false);
 	}
 
 	public void addNavigationObserver(INavigationObserver navigationObserver) {

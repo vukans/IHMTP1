@@ -2,10 +2,15 @@ package com.iup.tp.twitup.core;
 
 import com.iup.tp.twitup.datamodel.Database;
 import com.iup.tp.twitup.datamodel.IDatabase;
-import com.iup.tp.twitup.datamodel.INavigationObserver;
+import com.iup.tp.twitup.datamodel.User;
 import com.iup.tp.twitup.events.file.IWatchableDirectory;
 import com.iup.tp.twitup.events.file.WatchableDirectory;
 import com.iup.tp.twitup.ihm.*;
+import com.iup.tp.twitup.ihm.mock.TwitupMock;
+import com.iup.tp.twitup.observer.navigation.INavigationObserver;
+import com.iup.tp.twitup.observer.session.ILoggedInObserver;
+import com.iup.tp.twitup.observer.session.ILoggedOutObserver;
+import com.iup.tp.twitup.observer.session.ISessionObserver;
 
 import javax.swing.*;
 import java.io.File;
@@ -15,7 +20,7 @@ import java.io.File;
  *
  * @author S.Lucas
  */
-public class Twitup implements INavigationObserver {
+public class Twitup implements INavigationObserver, ILoggedInObserver, ILoggedOutObserver {
 	/**
 	 * Base de données.
 	 */
@@ -50,6 +55,11 @@ public class Twitup implements INavigationObserver {
 	 * Nom de la classe de l'UI.
 	 */
 	protected String mUiClassName;
+
+	/**
+	 * Utilisateur connecté.
+	 */
+	protected User connectedUser;
 
 	/**
 	 * Constructeur.
@@ -89,7 +99,7 @@ public class Twitup implements INavigationObserver {
 	 */
 	protected void initGui() {
 		mMainView = new TwitupMainView();
-		mMainView.getContentPane().add(new WelcomeView(mExchangeDirectoryPath));
+		mMainView.getContentPane().add(new AboutView());
 		mMainView.addNavigationObserver(this);
 		mMainView.showGUI();
 	}
@@ -101,8 +111,8 @@ public class Twitup implements INavigationObserver {
 	 * pouvoir utiliser l'application</b>
 	 */
 	protected void initDirectory() {
-		String folder = this.mMainView.askDirectory();
-		this.initDirectory(folder);
+		//String folder = this.mMainView.askDirectory();
+		this.initDirectory("C:\\Users\\Quentin\\Documents\\MySingery");
 	}
 
 	/**
@@ -163,27 +173,42 @@ public class Twitup implements INavigationObserver {
 	}
 
 	@Override
+	public void loadProfilView() {
+		ProfilView profilView = new ProfilView(connectedUser);
+		loadView(profilView);
+	}
+
+	@Override
 	public void loadSignInView() {
-		SignInController signInController = new SignInController(mDatabase);
+		ISessionObserver sessionObserver = new SessionController(mEntityManager, mDatabase);
 		SignInView signInView = new SignInView();
-		signInView.addSIgnInController(signInController);
+		signInView.addSessionObserver(sessionObserver);
 		signInView.addNavigationObserver(this);
-		signInController.addSignedInObserver(signInView);
+		sessionObserver.addSignedInObserver(signInView);
+		sessionObserver.addLoggedInObservers(this);
+		sessionObserver.addUserStateObserver(mMainView);
 		loadView(signInView);
 	}
 
 	@Override
-	public void loadSignUp() {
-		SignUpController signUpController = new SignUpController(mEntityManager, mDatabase);
+	public void loadSignUpView() {
+		ISessionObserver sessionObserver = new SessionController(mEntityManager, mDatabase);
 		SignUpView signUpView = new SignUpView();
-		signUpView.addController(signUpController);
-		signUpController.addSignedUpObserver(signUpView);
+		signUpView.addSessionObserver(sessionObserver);
+		sessionObserver.addSignedUpObserver(signUpView);
+		sessionObserver.addUserStateObserver(mMainView);
 		loadView(signUpView);
 	}
 
 	@Override
-	public void exit() {
-		System.exit(0);
+	public void loadDisconnectView() {
+		ISessionObserver sessionObserver = new SessionController(mEntityManager, mDatabase);
+		LogOutView disconnectView = new LogOutView();
+		disconnectView.addNavigationObserver(this);
+		disconnectView.addSessionObserver(sessionObserver);
+		sessionObserver.addLoggedOutObserver(this);
+		sessionObserver.addUserStateObserver(mMainView);
+		loadView(disconnectView);
 	}
 
 	private void loadView(ViewBase viewBase) {
@@ -191,5 +216,21 @@ public class Twitup implements INavigationObserver {
 		mMainView.getContentPane().add(viewBase);
 		mMainView.revalidate();
 		mMainView.repaint();
+	}
+
+	@Override
+	public void notifyLoggedIn(User user) {
+		connectedUser = user;
+		System.out.println(user + " have been persisted");
+	}
+
+	@Override
+	public void exit() {
+		System.exit(0);
+	}
+
+	@Override
+	public void notifyLoggedOut() {
+		connectedUser = null;
 	}
 }

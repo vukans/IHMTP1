@@ -1,8 +1,7 @@
 package com.iup.tp.twitup.ihm;
 
-import com.iup.tp.twitup.core.SignUpController;
-import com.iup.tp.twitup.datamodel.ISignedUpObserver;
-import com.iup.tp.twitup.datamodel.User;
+import com.iup.tp.twitup.observer.session.ISessionObserver;
+import com.iup.tp.twitup.observer.session.ISignedUpObserver;
 
 import javax.swing.*;
 import java.awt.*;
@@ -11,116 +10,129 @@ import java.util.List;
 
 public class SignUpView extends ViewBase implements ISignedUpObserver {
 
-	private final List<SignUpController> signUpControllers;
+	private final List<ISessionObserver> sessionObservers;
 
-	private final JTextField tag;
-	private final JTextField username;
-	private final JPasswordField password;
-	private final JLabel info;
+	private final JTextField tague;
+	private final JTextField usernem;
+	private final JPasswordField depecheModePasse;
+	private final JLabel infos;
 
 	public SignUpView() {
 		super();
 
-		signUpControllers = new ArrayList<>();
+		sessionObservers = new ArrayList<>();
 
 		setLayout(new GridBagLayout());
 
 		JLabel title = new JLabel("Einscryptsion");
-		title.setFont(title.getFont().deriveFont(32.0F));
+		title.setFont(title.getFont().deriveFont(48.0F));
 
-		ImageIcon tague = new ImageIcon("src/resources/images/tag.png");
-		JLabel tagText = new JLabel("Tague", tague, JLabel.CENTER);
-		tag = new JTextField(50);
+		ImageIcon tagueImg = new ImageIcon("src/resources/images/tague.png");
+		JLabel tagueText = new JLabel("Tague :", tagueImg, JLabel.CENTER);
+		tagueText.setFont(title.getFont().deriveFont(14.0F));
+		tague = new JTextField(20);
 
-		ImageIcon nem = new ImageIcon("src/resources/images/nem.png");
-		JLabel usernameText = new JLabel("User nem", nem, JLabel.CENTER);
-		username = new JTextField(50);
+		ImageIcon usernemImg = new ImageIcon("src/resources/images/usernem.png");
+		JLabel usernemText = new JLabel("User-nem :", usernemImg, JLabel.CENTER);
+		usernemText.setFont(title.getFont().deriveFont(14.0F));
+		usernem = new JTextField(20);
 
-		ImageIcon mode = new ImageIcon("src/resources/images/mode.png");
-		JLabel passwordText = new JLabel("Depeche Mode passe", mode, JLabel.CENTER);
-		password = new JPasswordField(50);
+		ImageIcon depecheModePasseImg = new ImageIcon("src/resources/images/depechemodepasse.png");
+		JLabel depecheModePasseText = new JLabel("Depeche Mode-passe :", depecheModePasseImg, JLabel.CENTER);
+		depecheModePasseText.setFont(title.getFont().deriveFont(14.0F));
+		depecheModePasse = new JPasswordField(20);
 
-		JButton create = new JButton("Injectaient dans le poulélé");
-		create.addActionListener((e) -> doRegisterUser(tag.getText(), username.getText(), String.valueOf(password.getPassword())));
+		JButton create = new JButton("S'inscrire dans le poulélé");
+		create.addActionListener((e) -> doRegisterUser(tague.getText(), usernem.getText(), String.valueOf(depecheModePasse.getPassword())));
 
-		add(title, new GridBagConstraints(0, 0, 1, 6, 1, 1,
+		JButton avatar = new JButton("Sélectionner un Bonhomme Bleu");
+
+		infos = new JLabel();
+
+		add(title, new GridBagConstraints(0, 0, 2, 1, 0, 0,
+				GridBagConstraints.CENTER,
+				GridBagConstraints.NONE,
+				new Insets(25, 25, 25, 25),
+				0, 0));
+
+		add(tagueText, new GridBagConstraints(0, 1, 1, 1, 0, 0,
+				GridBagConstraints.EAST,
+				GridBagConstraints.NONE,
+				new Insets(5, 5, 5, 5),
+				0, 0));
+
+		add(tague, new GridBagConstraints(1, 1, 1, 1, 0, 0,
 				GridBagConstraints.CENTER,
 				GridBagConstraints.NONE,
 				new Insets(5, 5, 5, 5),
 				0, 0));
 
-		add(tagText, new GridBagConstraints(0, 10, 1, 6, 1, 1,
+		add(usernemText, new GridBagConstraints(0, 2, 1, 1, 0, 0,
+				GridBagConstraints.EAST,
+				GridBagConstraints.NONE,
+				new Insets(5, 5, 5, 5),
+				0, 0));
+
+		add(usernem, new GridBagConstraints(1, 2, 1, 1, 0, 0,
 				GridBagConstraints.CENTER,
 				GridBagConstraints.NONE,
 				new Insets(5, 5, 5, 5),
 				0, 0));
 
-		add(tag, new GridBagConstraints(0, 20, 1, 6, 1, 1,
+		add(depecheModePasseText, new GridBagConstraints(0, 3, 1, 1, 0, 0,
+				GridBagConstraints.EAST,
+				GridBagConstraints.NONE,
+				new Insets(5, 5, 5, 5),
+				0, 0));
+
+		add(depecheModePasse, new GridBagConstraints(1, 3, 1, 1, 0, 0,
 				GridBagConstraints.CENTER,
 				GridBagConstraints.NONE,
 				new Insets(5, 5, 5, 5),
 				0, 0));
 
-		add(usernameText, new GridBagConstraints(0, 30, 1, 6, 1, 1,
+		add(avatar, new GridBagConstraints(0, 4, 1, 1, 0, 0,
 				GridBagConstraints.CENTER,
 				GridBagConstraints.NONE,
 				new Insets(5, 5, 5, 5),
 				0, 0));
 
-		add(username, new GridBagConstraints(0, 40, 1, 6, 1, 1,
+		add(create, new GridBagConstraints(0, 5, 2, 1, 0, 0,
 				GridBagConstraints.CENTER,
 				GridBagConstraints.NONE,
 				new Insets(5, 5, 5, 5),
 				0, 0));
 
-		add(passwordText, new GridBagConstraints(0, 50, 1, 6, 1, 1,
+		add(infos, new GridBagConstraints(0, 6, 2, 1, 0, 0,
 				GridBagConstraints.CENTER,
-				GridBagConstraints.NONE,
-				new Insets(5, 5, 5, 5),
-				0, 0));
-
-		add(password, new GridBagConstraints(0, 60, 1, 6, 1, 1,
-				GridBagConstraints.CENTER,
-				GridBagConstraints.NONE,
-				new Insets(5, 5, 5, 5),
-				0, 0));
-
-		add(create, new GridBagConstraints(0, 70, 1, 6, 1, 1,
-				GridBagConstraints.CENTER,
-				GridBagConstraints.NONE,
-				new Insets(5, 5, 5, 5),
-				0, 0));
-
-		info = new JLabel();
-
-		add(info, new GridBagConstraints(0, 80, 1, 6, 1, 1, GridBagConstraints.CENTER, GridBagConstraints.NONE,
-				new Insets(5, 5, 5, 5),
+				GridBagConstraints.HORIZONTAL,
+				new Insets(15, 15, 15, 15),
 				0, 0));
 	}
 
 	private void doRegisterUser(String tag, String username, String password) {
-		signUpControllers.forEach(res -> res.notifyRegisterUser(tag, username, password));
+		sessionObservers.forEach(res -> res.notifySignUp(tag, username, password));
 	}
 
 	@Override
-	public void notifyUserCreated(User user) {
-		info.setText("Le CBO est dans le poulélé, je répète, le cbo est dans le POULéLé !");
-		info.setIcon(new ImageIcon("src/resources/images/chickenCreated.png"));
+	public void notifyUserCreated(String tag) {
+		infos.setText("Le CBO @" + tag + " a été ajouté dans le poulélé, je répète, le CBO est dans le POULéLé !");
+		infos.setIcon(new ImageIcon("src/resources/images/chicken.gif"));
 	}
 
 	@Override
-	public void notifyUserAlreadyExists(User user) {
-		info.setText("L'utilisateur " + user.getUserTag() + " est déjà dans le POUéLéLé ! IL é TOU CUIT !");
-		info.setIcon(new ImageIcon("src/resources/images/chickenAlreadyExists.png"));
+	public void notifyUserAlreadyExists(String tag) {
+		infos.setText("Le CBO @" + tag + " est déjà dans le POULéLé ! T'es cuits !");
+		infos.setIcon(new ImageIcon("src/resources/images/roast.png"));
 	}
 
 	@Override
 	public void notifyWrongInputs() {
-		info.setText("Les champs (du poulélé) ne sont pas correctement remplis, IL EST TOUT CRLU ! ;)");
-		info.setIcon(new ImageIcon("src/resources/images/chickenWrongInputs.png"));
+		infos.setText("Les champs ne sont pas correctement remplis, ils sont tout crlus !");
+		infos.setIcon(new ImageIcon("src/resources/images/raw.png"));
 	}
 
-	public void addController(SignUpController signUpController) {
-		signUpControllers.add(signUpController);
+	public void addSessionObserver(ISessionObserver sessionObserver) {
+		sessionObservers.add(sessionObserver);
 	}
 }
