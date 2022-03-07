@@ -218,6 +218,7 @@ public class Twitup implements INavigationObserver, ILoggedInObserver, ILoggedOu
 		profilesView.addProfilesObserver(profilesObserver);
 		profilesObserver.addGetProfilesObserver(profilesView);
 		loadView(profilesView);
+		profilesView.showProfiles();
 	}
 
 	private void loadView(ViewBase viewBase) {
