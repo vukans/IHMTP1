@@ -54,61 +54,61 @@ public class SignUpView extends ViewBase implements ISignedUpObserver {
 
 		infos = new JLabel();
 
-		add(title, new GridBagConstraints(0, 0, 2, 1, 0, 0,
+		add(title, new GridBagConstraints(0, 0, 2, 1, 1, 1,
 				GridBagConstraints.CENTER,
 				GridBagConstraints.NONE,
 				new Insets(25, 25, 25, 25),
 				0, 0));
 
-		add(tagueText, new GridBagConstraints(0, 1, 1, 1, 0, 0,
+		add(tagueText, new GridBagConstraints(0, 1, 1, 1, 1, 1,
 				GridBagConstraints.EAST,
 				GridBagConstraints.NONE,
 				new Insets(5, 5, 5, 5),
 				0, 0));
 
-		add(tague, new GridBagConstraints(1, 1, 1, 1, 0, 0,
+		add(tague, new GridBagConstraints(1, 1, 1, 1, 1, 1,
 				GridBagConstraints.CENTER,
 				GridBagConstraints.NONE,
 				new Insets(5, 5, 5, 5),
 				0, 0));
 
-		add(usernemText, new GridBagConstraints(0, 2, 1, 1, 0, 0,
+		add(usernemText, new GridBagConstraints(0, 2, 1, 1, 1, 1,
 				GridBagConstraints.EAST,
 				GridBagConstraints.NONE,
 				new Insets(5, 5, 5, 5),
 				0, 0));
 
-		add(usernem, new GridBagConstraints(1, 2, 1, 1, 0, 0,
+		add(usernem, new GridBagConstraints(1, 2, 1, 1, 1, 1,
 				GridBagConstraints.CENTER,
 				GridBagConstraints.NONE,
 				new Insets(5, 5, 5, 5),
 				0, 0));
 
-		add(depecheModePasseText, new GridBagConstraints(0, 3, 1, 1, 0, 0,
+		add(depecheModePasseText, new GridBagConstraints(0, 3, 1, 1, 1, 1,
 				GridBagConstraints.EAST,
 				GridBagConstraints.NONE,
 				new Insets(5, 5, 5, 5),
 				0, 0));
 
-		add(depecheModePasse, new GridBagConstraints(1, 3, 1, 1, 0, 0,
+		add(depecheModePasse, new GridBagConstraints(1, 3, 1, 1, 1, 1,
 				GridBagConstraints.CENTER,
 				GridBagConstraints.NONE,
 				new Insets(5, 5, 5, 5),
 				0, 0));
 
-		add(avatar, new GridBagConstraints(0, 4, 1, 1, 0, 0,
+		add(avatar, new GridBagConstraints(0, 4, 1, 1, 1, 1,
 				GridBagConstraints.CENTER,
 				GridBagConstraints.NONE,
 				new Insets(5, 5, 5, 5),
 				0, 0));
 
-		add(create, new GridBagConstraints(0, 5, 2, 1, 0, 0,
+		add(create, new GridBagConstraints(0, 5, 2, 1, 1, 1,
 				GridBagConstraints.CENTER,
 				GridBagConstraints.NONE,
 				new Insets(5, 5, 5, 5),
 				0, 0));
 
-		add(infos, new GridBagConstraints(0, 6, 2, 1, 0, 0,
+		add(infos, new GridBagConstraints(0, 6, 2, 1, 1, 1,
 				GridBagConstraints.CENTER,
 				GridBagConstraints.HORIZONTAL,
 				new Insets(15, 15, 15, 15),

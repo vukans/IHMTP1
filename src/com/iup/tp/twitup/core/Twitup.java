@@ -1,5 +1,6 @@
 package com.iup.tp.twitup.core;
 
+import com.iup.tp.twitup.datamodel.ConnectedUserModel;
 import com.iup.tp.twitup.datamodel.Database;
 import com.iup.tp.twitup.datamodel.IDatabase;
 import com.iup.tp.twitup.datamodel.User;
@@ -213,12 +214,12 @@ public class Twitup implements INavigationObserver, ILoggedInObserver, ILoggedOu
 
 	@Override
 	public void loadProfilesView() {
-		IProfilesObserver profilesObserver = new ProfilesViewer(mEntityManager, mDatabase);
+		ConnectedUserModel connectedUserModel = new ConnectedUserModel(connectedUser);
+		IProfilesObserver profilesObserver = new ProfilesViewer(mEntityManager, mDatabase, connectedUserModel);
 		ProfilesView profilesView = new ProfilesView();
 		profilesView.addProfilesObserver(profilesObserver);
 		profilesObserver.addGetProfilesObserver(profilesView);
 		loadView(profilesView);
-		profilesView.showProfiles();
 	}
 
 	private void loadView(ViewBase viewBase) {

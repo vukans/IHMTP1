@@ -27,13 +27,13 @@ public class LogOutView extends ViewBase {
 		JButton logOut = new JButton("Se Dé&co");
 		logOut.addActionListener((e) -> doLogOut());
 
-		add(title, new GridBagConstraints(0, 0, 1, 1, 0, 0,
+		add(title, new GridBagConstraints(0, 0, 1, 1, 1, 1,
 				GridBagConstraints.CENTER,
 				GridBagConstraints.NONE,
 				new Insets(25, 25, 25, 25),
 				0, 0));
 
-		add(logOut, new GridBagConstraints(0, 1, 1, 1, 0, 0,
+		add(logOut, new GridBagConstraints(0, 1, 1, 1, 1, 1,
 				GridBagConstraints.CENTER,
 				GridBagConstraints.NONE,
 				new Insets(15, 15, 15, 15),

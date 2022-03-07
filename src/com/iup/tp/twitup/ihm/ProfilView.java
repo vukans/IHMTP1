@@ -21,19 +21,19 @@ public class ProfilView extends ViewBase {
 		JLabel nameText = new JLabel("@" + user.getUserTag() + " - " + user.getName(), JLabel.CENTER);
 		nameText.setFont(title.getFont().deriveFont(18.0F));
 
-		add(title, new GridBagConstraints(0, 0, 1, 1, 0, 0,
+		add(title, new GridBagConstraints(0, 0, 1, 1, 1, 1,
 				GridBagConstraints.CENTER,
 				GridBagConstraints.NONE,
 				new Insets(25, 25, 25, 25),
 				0, 0));
 
-		add(avatar, new GridBagConstraints(0, 1, 1, 1, 0, 0,
+		add(avatar, new GridBagConstraints(0, 1, 1, 1, 1, 1,
 				GridBagConstraints.CENTER,
 				GridBagConstraints.NONE,
 				new Insets(25, 25, 25, 25),
 				0, 0));
 
-		add(nameText, new GridBagConstraints(0, 2, 1, 1, 0, 0,
+		add(nameText, new GridBagConstraints(0, 2, 1, 1, 1, 1,
 				GridBagConstraints.CENTER,
 				GridBagConstraints.NONE,
 				new Insets(25, 25, 25, 25),
