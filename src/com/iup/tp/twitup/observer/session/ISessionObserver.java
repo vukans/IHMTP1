@@ -1,10 +1,12 @@
 package com.iup.tp.twitup.observer.session;
 
+import java.io.File;
+
 public interface ISessionObserver {
 
 	void notifySignIn(String tag, String password);
 
-	void notifySignUp(String tag, String username, String password);
+	void notifySignUp(String tag, String username, String password, File avatar);
 
 	void notifyLogOut();
 

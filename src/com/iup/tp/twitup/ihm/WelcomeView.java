@@ -4,11 +4,11 @@ import javax.swing.*;
 
 public class WelcomeView extends ViewBase {
 
-	public WelcomeView(String folder) {
+	public WelcomeView() {
 		super();
 
 		ImageIcon frenchFries = new ImageIcon("src/resources/images/frites.png");
-		JLabel text = new JLabel("Dossier de communication : " + folder, frenchFries, JLabel.CENTER);
+		JLabel text = new JLabel("Bienvenue !", frenchFries, JLabel.CENTER);
 
 		add(text);
 	}

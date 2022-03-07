@@ -8,6 +8,7 @@ import com.iup.tp.twitup.events.file.WatchableDirectory;
 import com.iup.tp.twitup.ihm.*;
 import com.iup.tp.twitup.ihm.mock.TwitupMock;
 import com.iup.tp.twitup.observer.navigation.INavigationObserver;
+import com.iup.tp.twitup.observer.profiles.IProfilesObserver;
 import com.iup.tp.twitup.observer.session.ILoggedInObserver;
 import com.iup.tp.twitup.observer.session.ILoggedOutObserver;
 import com.iup.tp.twitup.observer.session.ISessionObserver;
@@ -90,7 +91,7 @@ public class Twitup implements INavigationObserver, ILoggedInObserver, ILoggedOu
 		try {
 			UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
 		} catch (UnsupportedLookAndFeelException | ClassNotFoundException | InstantiationException | IllegalAccessException ignored) {
-
+			// Ignored.
 		}
 	}
 
@@ -99,7 +100,7 @@ public class Twitup implements INavigationObserver, ILoggedInObserver, ILoggedOu
 	 */
 	protected void initGui() {
 		mMainView = new TwitupMainView();
-		mMainView.getContentPane().add(new AboutView());
+		mMainView.getContentPane().add(new WelcomeView());
 		mMainView.addNavigationObserver(this);
 		mMainView.showGUI();
 	}
@@ -112,7 +113,7 @@ public class Twitup implements INavigationObserver, ILoggedInObserver, ILoggedOu
 	 */
 	protected void initDirectory() {
 		//String folder = this.mMainView.askDirectory();
-		this.initDirectory("C:\\Users\\Quentin\\Documents\\MySingery");
+		this.initDirectory("C:\\Users\\Quentin\\Documents\\Twittup");
 	}
 
 	/**
@@ -155,7 +156,6 @@ public class Twitup implements INavigationObserver, ILoggedInObserver, ILoggedOu
 
 		mWatchableDirectory.initWatching();
 		mWatchableDirectory.addObserver(mEntityManager);
-		System.out.println(mExchangeDirectoryPath);
 	}
 
 	public void show() {
@@ -164,7 +164,7 @@ public class Twitup implements INavigationObserver, ILoggedInObserver, ILoggedOu
 
 	@Override
 	public void loadWelcomeView() {
-		loadView(new WelcomeView(mExchangeDirectoryPath));
+		loadView(new WelcomeView());
 	}
 
 	@Override
@@ -211,6 +211,15 @@ public class Twitup implements INavigationObserver, ILoggedInObserver, ILoggedOu
 		loadView(disconnectView);
 	}
 
+	@Override
+	public void loadProfilesView() {
+		IProfilesObserver profilesObserver = new ProfilesViewer(mEntityManager, mDatabase);
+		ProfilesView profilesView = new ProfilesView();
+		profilesView.addProfilesObserver(profilesObserver);
+		profilesObserver.addGetProfilesObserver(profilesView);
+		loadView(profilesView);
+	}
+
 	private void loadView(ViewBase viewBase) {
 		mMainView.getContentPane().removeAll();
 		mMainView.getContentPane().add(viewBase);
@@ -221,16 +230,15 @@ public class Twitup implements INavigationObserver, ILoggedInObserver, ILoggedOu
 	@Override
 	public void notifyLoggedIn(User user) {
 		connectedUser = user;
-		System.out.println(user + " have been persisted");
-	}
-
-	@Override
-	public void exit() {
-		System.exit(0);
 	}
 
 	@Override
 	public void notifyLoggedOut() {
 		connectedUser = null;
+	}
+
+	@Override
+	public void exit() {
+		System.exit(0);
 	}
 }

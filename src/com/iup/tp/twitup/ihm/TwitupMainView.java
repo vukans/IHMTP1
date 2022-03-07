@@ -16,7 +16,7 @@ public class TwitupMainView extends JFrame implements IUserStateObserver {
 
 	private final JMenuBar bar;
 
-	private final JMenu menu;
+	private final JMenu firstMenu;
 
 	private final JMenuItem welcome;
 	private final JMenuItem about;
@@ -25,6 +25,10 @@ public class TwitupMainView extends JFrame implements IUserStateObserver {
 	private final JMenuItem signUp;
 	private final JMenuItem logOut;
 	private final JMenuItem exit;
+
+	private final JMenu secondMenu;
+
+	private final JMenuItem profiles;
 
 	public TwitupMainView() {
 		super("Le twitter du McDonald's du patelin");
@@ -35,7 +39,7 @@ public class TwitupMainView extends JFrame implements IUserStateObserver {
 
 		bar = new JMenuBar();
 
-		menu = new JMenu("Menu BestOf ->");
+		firstMenu = new JMenu("Menu MAXI BestOf");
 
 		welcome = new JMenuItem("BigMac"); // Welcome
 		welcome.setIcon(new ImageIcon("src/resources/images/bigmac.png"));
@@ -67,15 +71,25 @@ public class TwitupMainView extends JFrame implements IUserStateObserver {
 		exit.setIcon(new ImageIcon("src/resources/images/dips.png"));
 		exit.addActionListener((e) -> notifyExitObservers());
 
-		menu.add(welcome);
-		menu.add(about);
-		menu.add(profil);
-		menu.add(signIn);
-		menu.add(signUp);
-		menu.add(logOut);
-		menu.add(exit);
+		firstMenu.add(welcome);
+		firstMenu.add(about);
+		firstMenu.add(profil);
+		firstMenu.add(signIn);
+		firstMenu.add(signUp);
+		firstMenu.add(logOut);
+		firstMenu.add(exit);
 
-		bar.add(menu);
+		bar.add(firstMenu);
+
+		secondMenu = new JMenu("Menu BestOf");
+
+		profiles = new JMenuItem("Bucket");
+		profiles.setIcon(new ImageIcon("src/resources/images/bucket.png"));
+		profiles.addActionListener((e) -> notifyProfilesViewObservers());
+
+		secondMenu.add(profiles);
+
+		bar.add(secondMenu);
 
 		setJMenuBar(bar);
 
@@ -129,6 +143,10 @@ public class TwitupMainView extends JFrame implements IUserStateObserver {
 
 	private void notifyExitObservers() {
 		navigationObservers.forEach(INavigationObserver::exit);
+	}
+
+	private void notifyProfilesViewObservers() {
+		navigationObservers.forEach(INavigationObserver::loadProfilesView);
 	}
 
 	@Override

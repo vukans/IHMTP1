@@ -1,9 +1,11 @@
 package com.iup.tp.twitup.core;
 
+import com.iup.tp.twitup.common.FilesUtils;
 import com.iup.tp.twitup.datamodel.IDatabase;
 import com.iup.tp.twitup.datamodel.User;
 import com.iup.tp.twitup.observer.session.*;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
@@ -45,20 +47,23 @@ public class SessionController implements ISessionObserver {
 		}
 	}
 
-	public void notifySignUp(String tag, String username, String password) {
+	public void notifySignUp(String tag, String username, String password, File avatar) {
 		if (tag == null || tag.length() < 4 ||
 				username == null || username.length() < 4 ||
-				password == null || password.length() < 6) {
+				password == null || password.length() < 6 ||
+				avatar == null) {
 			signedUpObservers.forEach(ISignedUpObserver::notifyWrongInputs);
 		} else {
 			UUID uuid = UUID.randomUUID();
 
-			User user = new User(uuid, tag, password, username, new HashSet<>(), "");
+			User user = new User(uuid, tag, password, username, new HashSet<>(), entityManager.mDirectoryPath + "\\" + avatar.getName());
 
 			boolean notAlreadyUsed = database.getUsers().stream().filter(res -> res.getUserTag().equals(tag)).findFirst().orElse(null) == null;
 
 			if (notAlreadyUsed) {
 				entityManager.sendUser(user);
+				File file = new File(entityManager.mDirectoryPath + "\\" + avatar.getName());
+				FilesUtils.copyFile(avatar.getAbsolutePath(), file.getAbsolutePath());
 				signedUpObservers.forEach(res -> res.notifyUserCreated(user.getUserTag()));
 			} else {
 				signedUpObservers.forEach(res -> res.notifyUserAlreadyExists(user.getUserTag()));

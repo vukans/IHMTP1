@@ -4,13 +4,17 @@ import com.iup.tp.twitup.observer.session.ISessionObserver;
 import com.iup.tp.twitup.observer.session.ISignedUpObserver;
 
 import javax.swing.*;
+import javax.swing.filechooser.FileNameExtensionFilter;
 import java.awt.*;
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
 public class SignUpView extends ViewBase implements ISignedUpObserver {
 
 	private final List<ISessionObserver> sessionObservers;
+
+	private File avatar;
 
 	private final JTextField tague;
 	private final JTextField usernem;
@@ -43,9 +47,10 @@ public class SignUpView extends ViewBase implements ISignedUpObserver {
 		depecheModePasse = new JPasswordField(20);
 
 		JButton create = new JButton("S'inscrire dans le poulélé");
-		create.addActionListener((e) -> doRegisterUser(tague.getText(), usernem.getText(), String.valueOf(depecheModePasse.getPassword())));
+		create.addActionListener((e) -> doRegisterUser(tague.getText(), usernem.getText(), String.valueOf(depecheModePasse.getPassword()), avatar));
 
 		JButton avatar = new JButton("Sélectionner un Bonhomme Bleu");
+		avatar.addActionListener((e) -> openFileChooser());
 
 		infos = new JLabel();
 
@@ -110,8 +115,20 @@ public class SignUpView extends ViewBase implements ISignedUpObserver {
 				0, 0));
 	}
 
-	private void doRegisterUser(String tag, String username, String password) {
-		sessionObservers.forEach(res -> res.notifySignUp(tag, username, password));
+	private void openFileChooser() {
+		JFileChooser chooser = new JFileChooser();
+		chooser.setDialogTitle("PRend avatar");
+		FileNameExtensionFilter filter = new FileNameExtensionFilter("JPG & PNG Images", "jpg", "png");
+		chooser.setFileFilter(filter);
+		chooser.setFileSelectionMode(JFileChooser.FILES_ONLY);
+		int returnVal = chooser.showOpenDialog(null);
+		if (returnVal == JFileChooser.APPROVE_OPTION) {
+			avatar = chooser.getSelectedFile();
+		}
+	}
+
+	private void doRegisterUser(String tag, String username, String password, File avatar) {
+		sessionObservers.forEach(res -> res.notifySignUp(tag, username, password, avatar));
 	}
 
 	@Override

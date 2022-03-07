@@ -15,4 +15,6 @@ public interface INavigationObserver {
 	void loadProfilView();
 
 	void exit();
+
+	void loadProfilesView();
 }
