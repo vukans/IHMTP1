@@ -44,16 +44,11 @@ public class User {
 	/**
 	 * Constructeur.
 	 *
-	 * @param uuid
-	 *            , Identifiant unique de l'utilisateur.
-	 * @param userTag
-	 *            , Tag correspondant à l'utilisateur.
-	 * @param name
-	 *            , Nom de l'utilisateur.
-	 * @param follows
-	 *            , Liste des tags suivis.
-	 * @param avatarPath
-	 *            , Chemin d'accès à l'image de l'avatar.
+	 * @param uuid       , Identifiant unique de l'utilisateur.
+	 * @param userTag    , Tag correspondant à l'utilisateur.
+	 * @param name       , Nom de l'utilisateur.
+	 * @param follows    , Liste des tags suivis.
+	 * @param avatarPath , Chemin d'accès à l'image de l'avatar.
 	 */
 	public User(UUID uuid, String userTag, String userPassword, String name, Set<String> follows, String avatarPath) {
 		mUuid = uuid;
@@ -81,7 +76,7 @@ public class User {
 	/**
 	 * Assigne le nom de l'utilisateur.
 	 *
-	 * @param name
+	 * @param name name
 	 */
 	public void setName(String name) {
 		this.mName = name;
@@ -104,7 +99,7 @@ public class User {
 	/**
 	 * Assigne le mot de passe de l'utilisateur.
 	 *
-	 * @param userPassword
+	 * @param userPassword userPassword
 	 */
 	public void setUserPassword(String userPassword) {
 		this.mUserPassword = userPassword;
@@ -115,14 +110,13 @@ public class User {
 	 */
 	public Set<String> getFollows() {
 		// Clonage pour éviter les modifications exterieures
-		return new HashSet<String>(this.mFollows);
+		return new HashSet<>(this.mFollows);
 	}
 
 	/**
 	 * Retire un tag de la liste des tags suivis.
 	 *
-	 * @param tagToRemove
-	 *            , tag à retirer.
+	 * @param tagToRemove , tag à retirer.
 	 */
 	public void removeFollowing(String tagToRemove) {
 		this.mFollows.remove(tagToRemove);
@@ -131,8 +125,7 @@ public class User {
 	/**
 	 * Ajout un tag de la liste des tags suivis.
 	 *
-	 * @param tagToFollow
-	 *            , tag à ajouter.
+	 * @param tagToFollow , tag à ajouter.
 	 */
 	public void addFollowing(String tagToFollow) {
 		this.mFollows.add(tagToFollow);
@@ -148,7 +141,7 @@ public class User {
 	/**
 	 * Assigne le chemin d'accès au fichier de l'avatar de l'utilisateur.
 	 *
-	 * @param avatarPath
+	 * @param avatarPath avatarPath
 	 */
 	public void setAvatarPath(String avatarPath) {
 		this.mAvatarPath = avatarPath;
@@ -162,53 +155,46 @@ public class User {
 	}
 
 	/**
-	 * {@inheritDoc}
+	 * @inheritDoc
 	 */
-//	-> A activer... pourquoi ?
-//	public int hashCode() {
-//		int hashCode = 0;
-//
-//		if (this.mUuid != null) {
-//			hashCode = this.mUuid.hashCode();
-//		}
-//
-//		return hashCode;
-//	}
+	public int hashCode() {
+		int hashCode = 0;
+
+		if (this.mUuid != null) {
+			hashCode = this.mUuid.hashCode();
+		}
+
+		return hashCode;
+	}
 
 	/**
-	 * @{inheritDoc
+	 * @inheritDoc
 	 */
 	@Override
 	public boolean equals(Object other) {
 		boolean equals = false;
 
-		if (other != null) {
-			if (other instanceof User) {
-				User otherUser = (User) other;
-				equals = (this.getUuid().equals(otherUser.getUuid()));
-			}
+		if (other instanceof User) {
+			User otherUser = (User) other;
+			equals = (this.getUuid().equals(otherUser.getUuid()));
 		}
 
 		return equals;
 	}
 
 	/**
-	 * {@inheritDoc}
+	 * @inheritDoc
 	 */
 	@Override
 	public String toString() {
-		StringBuffer sb = new StringBuffer();
-
-		sb.append("[");
-		sb.append(this.getClass().getName());
-		sb.append("] : ");
-		sb.append(this.getUuid());
-		sb.append(" {@");
-		sb.append(this.getUserTag());
-		sb.append(" / ");
-		sb.append(this.getName());
-		sb.append("}");
-
-		return sb.toString();
+		return "[" +
+				this.getClass().getName() +
+				"] : " +
+				this.getUuid() +
+				" {@" +
+				this.getUserTag() +
+				" / " +
+				this.getName() +
+				"}";
 	}
 }

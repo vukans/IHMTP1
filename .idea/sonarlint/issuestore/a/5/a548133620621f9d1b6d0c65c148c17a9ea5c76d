@@ -1,0 +1,7 @@
+
+\	java:S899"";Do something with the "boolean" value returned by "delete".(ΕΫπ…όÿÿÿÿ8–φ‘έφ/
+p
+java:S4042""NUse "java.nio.file.Files#delete" here for better messages on error conditions.(ΕΫπ…όÿÿÿÿ8–φ‘έφ/
+G
+java:S1181:"%Catch Exception instead of Throwable.(•”ψΎψÿÿÿÿ8®‡°άφ/
+U	java:S106;"9Replace this use of System.out or System.err by a logger.(·¶Τ8²‡°άφ/

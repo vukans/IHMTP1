@@ -4,24 +4,38 @@ import java.util.Set;
 
 /**
  * Interface de la base de données de l'application.
- * 
+ *
  * @author S.Lucas
  */
 public interface IDatabase {
 
 	/**
-	 * Ajoute un observateur sur les modifications de la base de données.
-	 * 
-	 * @param observer
+	 * Ajoute un observateur sur les modifications de la base de données des twits.
+	 *
+	 * @param databaseTwitsObserver databaseUsersObserver
 	 */
-	void addObserver(IDatabaseObserver observer);
+	void addIDatabaseTwitsObserver(IDatabaseTwitsObserver databaseTwitsObserver);
 
 	/**
-	 * Supprime un observateur sur les modifications de la base de données.
-	 * 
-	 * @param observer
+	 * Supprime un observateur sur les modifications de la base de données des twits.
+	 *
+	 * @param databaseTwitsObserver databaseUsersObserver
 	 */
-	void deleteObserver(IDatabaseObserver observer);
+	void removeIDatabaseTwitsObserver(IDatabaseTwitsObserver databaseTwitsObserver);
+
+	/**
+	 * Ajoute un observateur sur les modifications de la base de données des users.
+	 *
+	 * @param databaseUsersObserver databaseUsersObserver
+	 */
+	void addIDatabaseUsersObserver(IDatabaseUsersObserver databaseUsersObserver);
+
+	/**
+	 * Supprime un observateur sur les modifications de la base de données des users.
+	 *
+	 * @param databaseUsersObserver databaseUsersObserver
+	 */
+	void removeIDatabaseUsersObserver(IDatabaseUsersObserver databaseUsersObserver);
 
 	/**
 	 * Retourne la liste des utilisateurs
@@ -35,44 +49,44 @@ public interface IDatabase {
 
 	/**
 	 * Ajoute un twit à la base de données.
-	 * 
-	 * @param twitToAdd
+	 *
+	 * @param twitToAdd twitToAdd
 	 */
 	void addTwit(Twit twitToAdd);
 
 	/**
 	 * Supprime un twit de la base de données.
-	 * 
-	 * @param twitToRemove
+	 *
+	 * @param twitToRemove twitToRemove
 	 */
 	void removeTwit(Twit twitToRemove);
 
 	/**
 	 * Modification d'un twit de la base de données. <br/>
 	 * <i>Normalement peu probable qu'un twit soit modifié...</i>
-	 * 
-	 * @param twitToModify
+	 *
+	 * @param twitToModify twitToModify
 	 */
 	void modifiyTwit(Twit twitToModify);
 
 	/**
 	 * Ajoute un utilisateur à la base de données.
-	 * 
-	 * @param userToAdd
+	 *
+	 * @param userToAdd userToAdd
 	 */
 	void addUser(User userToAdd);
 
 	/**
 	 * Supprime un utilisateur de la base de données.
-	 * 
-	 * @param userToRemove
+	 *
+	 * @param userToRemove userToRemove
 	 */
 	void removeUser(User userToRemove);
 
 	/**
 	 * Modification d'un utilisateur de la base de données.
-	 * 
-	 * @param userToModify
+	 *
+	 * @param userToModify userToModify
 	 */
 	void modifiyUser(User userToModify);
 
@@ -93,47 +107,42 @@ public interface IDatabase {
 
 	/**
 	 * Retourne tous les Twits présents en base ayant le tag donné
-	 * 
-	 * @param tag
-	 *            , tag à rechercher.
+	 *
+	 * @param tag , tag à rechercher.
 	 */
 	Set<Twit> getTwitsWithTag(String tag);
 
 	/**
 	 * Retourne tous les Twits présents en base ayant le tag utilisateur donné
-	 * 
-	 * @param userTag
-	 *            , tag utilisateur à rechercher.
+	 *
+	 * @param userTag , tag utilisateur à rechercher.
 	 */
 	Set<Twit> getTwitsWithUserTag(String userTag);
 
 	/**
 	 * Retourne tous les Twits d'un utilisateur.
-	 * 
-	 * @param user
-	 *            , utilisateur dont les twits sont à rechercher.
+	 *
+	 * @param user , utilisateur dont les twits sont à rechercher.
 	 */
 	Set<Twit> getUserTwits(User user);
 
 	/**
 	 * Retourne tous les utilisateurs suivant l'utilisateur donnée
-	 * 
-	 * @param user
-	 *            , utilisateur dont les followers sont à rechercher.
+	 *
+	 * @param user , utilisateur dont les followers sont à rechercher.
 	 */
 	Set<User> getFollowers(User user);
 
 	/**
 	 * Retourne le nombre de followers pour l'utilisateur donné.
-	 * 
-	 * @param user
-	 *            , utilisateur dont le nombre de followers est à rechercher.
+	 *
+	 * @param user , utilisateur dont le nombre de followers est à rechercher.
 	 */
 	int getFollowersCount(User user);
 
 	/**
 	 * Retourne l'utilisateur inconnu du système.
 	 */
-	public User getUnknowUser();
+	User getUnknowUser();
 
 }

@@ -1,15 +1,15 @@
 package com.iup.tp.twitup.datamodel.converter;
 
-import java.util.HashSet;
-import java.util.Map;
-import java.util.Set;
-import java.util.UUID;
-
 import com.iup.tp.twitup.common.Constants;
 import com.iup.tp.twitup.datamodel.Twit;
 import com.iup.tp.twitup.datamodel.User;
 import com.iup.tp.twitup.datamodel.jaxb.bean.twit.TwitXml;
 import com.iup.tp.twitup.datamodel.jaxb.bean.user.UserXml;
+
+import java.util.HashSet;
+import java.util.Map;
+import java.util.Set;
+import java.util.UUID;
 
 /**
  * Classe de gestion des conversion des objets entre le datamodle et les bean
@@ -19,10 +19,14 @@ import com.iup.tp.twitup.datamodel.jaxb.bean.user.UserXml;
  */
 public class XmlbeanDatamodelConverter {
 
+	private XmlbeanDatamodelConverter() {
+
+	}
+
 	/**
 	 * Conversion du modèle de donnée vers le bean du fichier XML.
 	 *
-	 * @param twitToConvert
+	 * @param twitToConvert twitToConvert
 	 */
 	public static TwitXml convertAsXmlTwit(Twit twitToConvert) {
 		TwitXml twitXml = new TwitXml();
@@ -38,11 +42,9 @@ public class XmlbeanDatamodelConverter {
 	 * Conversion du fichier XML vers le modèle de donnée.<br/>
 	 * <i>NB, La map doit au moins contenir l'utilisateur inconnu</i>
 	 *
-	 * @param twitToConvert
-	 *            , Twit à convertir.
-	 * @param userMap
-	 *            , Map contenant les utilisateurs enregistrés en fonction de
-	 *            leur UUID.
+	 * @param twitToConvert , Twit à convertir.
+	 * @param userMap       , Map contenant les utilisateurs enregistrés en fonction de
+	 *                      leur UUID.
 	 */
 	public static Twit convertAsModelTwit(TwitXml twitToConvert, Map<UUID, User> userMap) {
 		UUID twitUuid = UUID.fromString(twitToConvert.getID());
@@ -59,7 +61,7 @@ public class XmlbeanDatamodelConverter {
 	/**
 	 * Conversion du modèle de donnée vers le bean du fichier XML.
 	 *
-	 * @param userToConvert
+	 * @param userToConvert userToConvert
 	 */
 	public static UserXml convertAsXmlUser(User userToConvert) {
 		UserXml userXml = new UserXml();
@@ -79,11 +81,11 @@ public class XmlbeanDatamodelConverter {
 	/**
 	 * Conversion du fichier XML vers le modèle de donnée.
 	 *
-	 * @param userToConvert
+	 * @param userToConvert userToConvert
 	 */
 	public static User convertAsModelUser(UserXml userToConvert) {
 		UUID userUuid = UUID.fromString(userToConvert.getID());
-		Set<String> follows = new HashSet<String>(userToConvert.getFollows());
+		Set<String> follows = new HashSet<>(userToConvert.getFollows());
 
 		return new User(userUuid, userToConvert.getUserTag(), userToConvert.getUserPassword(), userToConvert.getName(),
 				follows, userToConvert.getAvatarPath());

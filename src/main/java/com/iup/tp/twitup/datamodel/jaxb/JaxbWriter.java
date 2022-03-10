@@ -1,14 +1,13 @@
 package com.iup.tp.twitup.datamodel.jaxb;
 
-import java.io.File;
-import java.io.FileWriter;
-
-import javax.xml.bind.JAXBContext;
-import javax.xml.bind.Marshaller;
-
 import com.iup.tp.twitup.common.FilesUtils;
 import com.iup.tp.twitup.datamodel.jaxb.bean.twit.TwitXml;
 import com.iup.tp.twitup.datamodel.jaxb.bean.user.UserXml;
+
+import javax.xml.bind.JAXBContext;
+import javax.xml.bind.Marshaller;
+import java.io.File;
+import java.io.FileWriter;
 
 /**
  * Classe de génération des fichiers XML.
@@ -16,13 +15,16 @@ import com.iup.tp.twitup.datamodel.jaxb.bean.user.UserXml;
  * @author S.Lucas
  */
 public class JaxbWriter {
+
+	private JaxbWriter() {
+
+	}
+
 	/**
 	 * Génération d'un fichier pour un twit ({@link TwitXml}).
 	 *
-	 * @param twit
-	 *            , TwitXml à générer.
-	 * @param destFileName
-	 *            , Fichier de destination.
+	 * @param twit         , TwitXml à générer.
+	 * @param destFileName , Fichier de destination.
 	 * @return un booléen indiquant si la génération s'est déroulée avec succès.
 	 */
 	public static boolean writeTwitFile(TwitXml twit, String destFileName) {
@@ -32,10 +34,8 @@ public class JaxbWriter {
 	/**
 	 * Génération d'un fichier pour un utilisateur ({@link UserXml}).
 	 *
-	 * @param user
-	 *            , UserXml à générer.
-	 * @param destFileName
-	 *            , Fichier de destination.
+	 * @param user         , UserXml à générer.
+	 * @param destFileName , Fichier de destination.
 	 * @return un booléen indiquant si la génération s'est déroulée avec succès.
 	 */
 	public static boolean writeUserFile(UserXml user, String destFileName) {
@@ -45,12 +45,9 @@ public class JaxbWriter {
 	/**
 	 * Génération d'un fichier XML correspondant à un objet.
 	 *
-	 * @param jaxbContext
-	 *            , Contexte JAXB pour le marshalling
-	 * @param objectToMarshal
-	 *            , Objet à convertir en XML.
-	 * @param destFileName
-	 *            , Chemin du fichier de destination finale.
+	 * @param clazz           , Contexte JAXB pour le marshalling
+	 * @param objectToMarshal , Objet à convertir en XML.
+	 * @param destFileName    , Chemin du fichier de destination finale.
 	 * @return un booléen indiquant si l'opération s'est déroulée avec succès.
 	 */
 	protected static boolean writeFile(Class<?> clazz, Object objectToMarshal, String destFileName) {

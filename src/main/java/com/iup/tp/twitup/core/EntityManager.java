@@ -1,12 +1,5 @@
 package com.iup.tp.twitup.core;
 
-import java.io.File;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Map;
-import java.util.Set;
-import java.util.UUID;
-
 import com.iup.tp.twitup.common.Constants;
 import com.iup.tp.twitup.datamodel.IDatabase;
 import com.iup.tp.twitup.datamodel.Twit;
@@ -17,11 +10,15 @@ import com.iup.tp.twitup.datamodel.jaxb.JaxbWriter;
 import com.iup.tp.twitup.datamodel.jaxb.bean.twit.TwitXml;
 import com.iup.tp.twitup.datamodel.jaxb.bean.user.UserXml;
 import com.iup.tp.twitup.events.file.IWatchableDirectoryObserver;
+import com.iup.tp.twitup.exception.DirectoryException;
+
+import java.io.File;
+import java.util.*;
 
 /**
  * Classe de gestion de la mise à jour de la base de données et de génération
  * des fichiers
- * 
+ *
  * @author S.Lucas
  */
 public class EntityManager implements IWatchableDirectoryObserver {
@@ -34,7 +31,7 @@ public class EntityManager implements IWatchableDirectoryObserver {
 	/**
 	 * Chemin d'accès au répertoire d'échange.
 	 */
-	protected String mDirectoryPath;
+	public String mDirectoryPath;
 
 	/**
 	 * Map reliant les UUID aux utilisateurs associés.
@@ -56,9 +53,9 @@ public class EntityManager implements IWatchableDirectoryObserver {
 	 */
 	public EntityManager(IDatabase database) {
 		this.mDatabase = database;
-		this.mUserMap = new HashMap<UUID, User>();
-		this.mTwitFileMap = new HashMap<String, Twit>();
-		this.mUserFileMap = new HashMap<String, User>();
+		this.mUserMap = new HashMap<>();
+		this.mTwitFileMap = new HashMap<>();
+		this.mUserFileMap = new HashMap<>();
 
 		// Ajout de l'utilisateur inconnu
 		User unknowUser = database.getUnknowUser();
@@ -198,12 +195,11 @@ public class EntityManager implements IWatchableDirectoryObserver {
 
 	/**
 	 * Extraction de tous les twit d'une liste de fichier.
-	 * 
-	 * @param allTwitFiles
-	 *            , Liste des fichiers de twit.
+	 *
+	 * @param allTwitFiles , Liste des fichiers de twit.
 	 */
 	protected Set<Twit> extractAllTwits(Set<File> allTwitFiles) {
-		Set<Twit> allTwits = new HashSet<Twit>();
+		Set<Twit> allTwits = new HashSet<>();
 
 		// Parcours de tous les fichiers de twit
 		for (File twitFile : allTwitFiles) {
@@ -223,9 +219,8 @@ public class EntityManager implements IWatchableDirectoryObserver {
 	/**
 	 * Extraction du fichier pour récupérer le Twit correspondant. <br/>
 	 * <i>Retourne <code>null</code> si un problème est rencontré</i>.
-	 * 
-	 * @param twitFile
-	 *            , Fichier XML du twit à ectraire.
+	 *
+	 * @param twitFile , Fichier XML du twit à ectraire.
 	 */
 	protected Twit extractTwit(File twitFile) {
 		Twit newTwit = null;
@@ -247,12 +242,11 @@ public class EntityManager implements IWatchableDirectoryObserver {
 
 	/**
 	 * Extraction de tous les utilisateur d'une liste de fichier.
-	 * 
-	 * @param allUserFiles
-	 *            , Liste des fichiers d'utilisateur.
+	 *
+	 * @param allUserFiles , Liste des fichiers d'utilisateur.
 	 */
 	protected Set<User> extractAllUsers(Set<File> allUserFiles) {
-		Set<User> allUsers = new HashSet<User>();
+		Set<User> allUsers = new HashSet<>();
 
 		// Parcours de tous les fichiers de l'utilsiateur
 		for (File userFile : allUserFiles) {
@@ -272,9 +266,8 @@ public class EntityManager implements IWatchableDirectoryObserver {
 	/**
 	 * Extraction du fichier pour récupérer l'utilisateur correspondant. <br/>
 	 * <i>Retourne <code>null</code> si un problème est rencontré</i>.
-	 * 
-	 * @param userFile
-	 *            , Fichier XML de l'utilisateur à ectraire.
+	 *
+	 * @param userFile , Fichier XML de l'utilisateur à ectraire.
 	 */
 	protected User extractUser(File userFile) {
 		User newUser = null;
@@ -297,9 +290,8 @@ public class EntityManager implements IWatchableDirectoryObserver {
 	/**
 	 * Retourne la liste des fichiers de type 'Utilisateur' parmis la liste des
 	 * fichiers donnés.
-	 * 
-	 * @param allFiles
-	 *            , Liste complète des fichiers.
+	 *
+	 * @param allFiles , Liste complète des fichiers.
 	 */
 	protected Set<File> getUserFiles(Set<File> allFiles) {
 		return this.getSpecificFiles(allFiles, Constants.USER_FILE_EXTENSION);
@@ -308,9 +300,8 @@ public class EntityManager implements IWatchableDirectoryObserver {
 	/**
 	 * Retourne la liste des fichiers de type 'Twit' parmis la liste des
 	 * fichiers donnés.
-	 * 
-	 * @param allFiles
-	 *            , Liste complète des fichiers.
+	 *
+	 * @param allFiles , Liste complète des fichiers.
 	 */
 	protected Set<File> getTwitFiles(Set<File> allFiles) {
 		return this.getSpecificFiles(allFiles, Constants.TWIT_FILE_EXTENSION);
@@ -319,14 +310,12 @@ public class EntityManager implements IWatchableDirectoryObserver {
 	/**
 	 * Retourne la liste des fichiers ayant une extension particulière parmis la
 	 * liste des fichiers donnés.
-	 * 
-	 * @param allFiles
-	 *            , Liste complète des fichiers.
-	 * @param extension
-	 *            , Extension des fichiers à récupérer.
+	 *
+	 * @param allFiles  , Liste complète des fichiers.
+	 * @param extension , Extension des fichiers à récupérer.
 	 */
 	protected Set<File> getSpecificFiles(Set<File> allFiles, String extension) {
-		Set<File> specificFiles = new HashSet<File>();
+		Set<File> specificFiles = new HashSet<>();
 
 		// Parcours de tous les fichiers donnés
 		for (File file : allFiles) {
@@ -341,8 +330,8 @@ public class EntityManager implements IWatchableDirectoryObserver {
 
 	/**
 	 * Configure le chemin d'accès au répertoire d'échange.
-	 * 
-	 * @param directoryPath
+	 *
+	 * @param directoryPath directoryPath
 	 */
 	public void setExchangeDirectory(String directoryPath) {
 		this.mDirectoryPath = directoryPath;
@@ -350,10 +339,10 @@ public class EntityManager implements IWatchableDirectoryObserver {
 
 	/**
 	 * Génération du fichier correspondant au twit.
-	 * 
-	 * @param twit
+	 *
+	 * @param twit twit
 	 */
-	public void sendTwit(Twit twit) {
+	public void sendTwit(Twit twit) throws DirectoryException {
 		if (mDirectoryPath != null) {
 			// Récupération du chemin pour le fichier à générer
 			String twitFileName = this.getFileName(twit.getUuid(), Constants.TWIT_FILE_EXTENSION);
@@ -364,14 +353,14 @@ public class EntityManager implements IWatchableDirectoryObserver {
 			// Génération du fichier XML
 			JaxbWriter.writeTwitFile(xmlTwit, twitFileName);
 		} else {
-			throw new RuntimeException("Le répertoire d'échange n'est pas configuré");
+			throw new DirectoryException("Le répertoire d'échange n'est pas configuré");
 		}
 	}
 
 	/**
 	 * Génération du fichier correspondant à l'utilisateur.
-	 * 
-	 * @param user
+	 *
+	 * @param user user
 	 */
 	public void sendUser(User user) {
 		if (mDirectoryPath != null) {
@@ -388,9 +377,9 @@ public class EntityManager implements IWatchableDirectoryObserver {
 
 	/**
 	 * Retourne un chemin d'accès au fichier pour l'uuid et l'extension donnés.
-	 * 
-	 * @param objectUuid
-	 * @param fileExtension
+	 *
+	 * @param objectUuid    objectUuid
+	 * @param fileExtension fileExtension
 	 */
 	protected String getFileName(UUID objectUuid, String fileExtension) {
 		return mDirectoryPath + Constants.SYSTEM_FILE_SEPARATOR + objectUuid + "." + fileExtension;

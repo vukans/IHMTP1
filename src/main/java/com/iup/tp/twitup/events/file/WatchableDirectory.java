@@ -1,15 +1,12 @@
 package com.iup.tp.twitup.events.file;
 
 import java.io.File;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 
 /**
  * Classe responsable de la surveillance d'un répertoire (avec notification des
  * {@link IWatchableDirectoryObserver} lors des modifications)
- * 
+ *
  * @author S.Lucas
  */
 public class WatchableDirectory implements IWatchableDirectory {
@@ -51,30 +48,29 @@ public class WatchableDirectory implements IWatchableDirectory {
 
 	/**
 	 * Constructeur.
-	 * 
-	 * @param directoryPath
-	 *            , Chemin d'accès au repertoire à surveiller.
+	 *
+	 * @param directoryPath , Chemin d'accès au repertoire à surveiller.
 	 */
 	public WatchableDirectory(String directoryPath) {
 		this.mDirectoryPath = directoryPath;
-		this.mPresentFiles = new HashSet<File>();
-		this.mFileModificationMap = new HashMap<String, Long>();
-		this.mObservers = new HashSet<IWatchableDirectoryObserver>();
+		this.mPresentFiles = new HashSet<>();
+		this.mFileModificationMap = new HashMap<>();
+		this.mObservers = new HashSet<>();
 	}
 
 	/**
-	 * @{inheritDoc
+	 * @inheritDoc
 	 */
 	@Override
 	public void changeDirectory(String directoryPath) {
 		// Clonage de la liste pour notification
-		HashSet<File> presentFiles = new HashSet<File>(this.mPresentFiles);
+		HashSet<File> presentFiles = new HashSet<>(this.mPresentFiles);
 
 		// Arret de la surveillance en cours
 		this.stopWatching();
 
 		// Notification de la suppression des fichiers
-		if (presentFiles.isEmpty() == false) {
+		if (!presentFiles.isEmpty()) {
 			this.notifyDeletedFiles(presentFiles);
 		}
 
@@ -83,7 +79,7 @@ public class WatchableDirectory implements IWatchableDirectory {
 	}
 
 	/**
-	 * @{inheritDoc
+	 * @inheritDoc
 	 */
 	@Override
 	public void initWatching() {
@@ -122,13 +118,13 @@ public class WatchableDirectory implements IWatchableDirectory {
 	protected void initPresentFiles() {
 		if (mDirectory != null) {
 			// Parcours de la liste des fichiers présent
-			for (File presentFile : mDirectory.listFiles()) {
+			for (File presentFile : Objects.requireNonNull(mDirectory.listFiles())) {
 				// Ajout du fichier courant
 				this.addPresentFile(presentFile);
 			}
 
 			// Notification de la liste des fichiers présents
-			if (this.mPresentFiles.isEmpty() == false) {
+			if (!this.mPresentFiles.isEmpty()) {
 				this.notifyPresentFiles(this.mPresentFiles);
 			}
 		}
@@ -138,21 +134,18 @@ public class WatchableDirectory implements IWatchableDirectory {
 	 * Démarrage de la surveillance du répertoire
 	 */
 	protected void startPolling() {
-		mWatchingThread = new Thread(new Runnable() {
-			@Override
-			public void run() {
-				try {
-					// Attente avant la prochaine vérification
-					Thread.sleep(POLLING_TIME);
+		mWatchingThread = new Thread(() -> {
+			try {
+				// Attente avant la prochaine vérification
+				Thread.sleep(POLLING_TIME);
 
-					// Vérification des changements
-					watchDirectory();
+				// Vérification des changements
+				watchDirectory();
 
-					// Relancement automatique
-					startPolling();
-				} catch (InterruptedException e) {
-					System.err.println("Surveillance du répertoire interrompue.");
-				}
+				// Relancement automatique
+				startPolling();
+			} catch (InterruptedException e) {
+				System.err.println("Surveillance du répertoire interrompue.");
 			}
 		});
 
@@ -165,21 +158,19 @@ public class WatchableDirectory implements IWatchableDirectory {
 	 */
 	protected void watchDirectory() {
 		if (mDirectory != null) {
-			Set<File> presentFiles = new HashSet<File>();
-			Set<File> newFiles = new HashSet<File>();
-			Set<File> deletedFiles = new HashSet<File>();
-			Set<File> modifiedFiles = new HashSet<File>();
-			Set<File> oldFiles = new HashSet<File>(this.mPresentFiles);
+			Set<File> presentFiles = new HashSet<>();
+			Set<File> newFiles = new HashSet<>();
+			Set<File> deletedFiles = new HashSet<>();
+			Set<File> modifiedFiles = new HashSet<>();
+			Set<File> oldFiles = new HashSet<>(this.mPresentFiles);
 
 			// Récupération de fichiers actuellement présent
-			for (File file : mDirectory.listFiles()) {
-				presentFiles.add(file);
-			}
+			Collections.addAll(presentFiles, Objects.requireNonNull(mDirectory.listFiles()));
 
 			// Récupération des nouveaux fichiers
 			for (File presentFile : presentFiles) {
 				// Si le fichier n'était pas présent avant
-				if (oldFiles.contains(presentFile) == false) {
+				if (!oldFiles.contains(presentFile)) {
 					// C'est un nouveau fichier
 					newFiles.add(presentFile);
 				}
@@ -188,7 +179,7 @@ public class WatchableDirectory implements IWatchableDirectory {
 			// Récupération des fichiers supprimés
 			for (File oldFile : oldFiles) {
 				// Si le fichier n'est plus présent
-				if (presentFiles.contains(oldFile) == false) {
+				if (!presentFiles.contains(oldFile)) {
 					// C'est un fichier supprimé
 					deletedFiles.add(oldFile);
 				}
@@ -197,33 +188,31 @@ public class WatchableDirectory implements IWatchableDirectory {
 			// Récupération des fichiers modifiés
 			for (File presentFile : presentFiles) {
 				// Si le fichiers n'est pas nouveau
-				if (newFiles.contains(presentFile) == false) {
+				if (!newFiles.contains(presentFile)) {
 					// Récupération de la date de modification de la version
 					// précédente
 					Long savedLastModification = mFileModificationMap.get(presentFile.getName());
 
-					if (savedLastModification != null) {
+					if (savedLastModification != null && savedLastModification < presentFile.lastModified()) {
 						// Si le fichier a été modifié depuis
-						if (savedLastModification < presentFile.lastModified()) {
-							// Stockage du fichier comme ayant été modifié
-							modifiedFiles.add(presentFile);
-						}
+						// Stockage du fichier comme ayant été modifié
+						modifiedFiles.add(presentFile);
 					}
 				}
 			}
 
 			// Notification des fichiers supprimés
-			if (deletedFiles.isEmpty() == false) {
+			if (!deletedFiles.isEmpty()) {
 				this.notifyDeletedFiles(deletedFiles);
 			}
 
 			// Notification des fichiers ajoutés
-			if (newFiles.isEmpty() == false) {
+			if (!newFiles.isEmpty()) {
 				this.notifyNewFiles(newFiles);
 			}
 
 			// Notification des fichiers modifiés
-			if (modifiedFiles.isEmpty() == false) {
+			if (!modifiedFiles.isEmpty()) {
 				this.notifyModifiedFiles(modifiedFiles);
 			}
 
@@ -237,7 +226,7 @@ public class WatchableDirectory implements IWatchableDirectory {
 	}
 
 	/**
-	 * @{inheritDoc
+	 * @inheritDoc
 	 */
 	@Override
 	public void stopWatching() {
@@ -248,12 +237,12 @@ public class WatchableDirectory implements IWatchableDirectory {
 	}
 
 	/**
-	 * @{inheritDoc
+	 * @inheritDoc
 	 */
 	@Override
 	public void addObserver(IWatchableDirectoryObserver observer) {
 		// Notification initiale du contenu
-		if (this.mPresentFiles.isEmpty() == false) {
+		if (!this.mPresentFiles.isEmpty()) {
 			observer.notifyPresentFiles(this.mPresentFiles);
 		}
 
@@ -262,7 +251,7 @@ public class WatchableDirectory implements IWatchableDirectory {
 	}
 
 	/**
-	 * @{inheritDoc
+	 * @inheritDoc
 	 */
 	@Override
 	public void removeObserver(IWatchableDirectoryObserver observer) {
@@ -272,12 +261,12 @@ public class WatchableDirectory implements IWatchableDirectory {
 	/**
 	 * Notification de la liste des fichiers présents initialement dans le
 	 * répertoire.
-	 * 
-	 * @param presentFiles
+	 *
+	 * @param presentFiles presentFiles
 	 */
 	protected void notifyPresentFiles(Set<File> presentFiles) {
 		// Clonage de la liste pour éviter les modifications concurantes
-		Set<IWatchableDirectoryObserver> clonedList = this.mObservers;
+		Set<IWatchableDirectoryObserver> clonedList = new HashSet<>(this.mObservers);
 
 		// Parcours de la liste des observeurs pour notification
 		for (IWatchableDirectoryObserver observer : clonedList) {
@@ -287,13 +276,12 @@ public class WatchableDirectory implements IWatchableDirectory {
 
 	/**
 	 * Notification de la liste des nouveaux fichiers dans le répertoire.
-	 * 
-	 * @param newFiles
-	 *            , Liste des nouveaux fichiers.
+	 *
+	 * @param newFiles , Liste des nouveaux fichiers.
 	 */
 	protected void notifyNewFiles(Set<File> newFiles) {
 		// Clonage de la liste pour éviter les modifications concurantes
-		Set<IWatchableDirectoryObserver> clonedList = this.mObservers;
+		Set<IWatchableDirectoryObserver> clonedList = new HashSet<>(this.mObservers);
 
 		// Parcours de la liste des observeurs pour notification
 		for (IWatchableDirectoryObserver observer : clonedList) {
@@ -303,13 +291,12 @@ public class WatchableDirectory implements IWatchableDirectory {
 
 	/**
 	 * Notification de la liste des fichiers supprimés dans le répertoire.
-	 * 
-	 * @param deletedFiles
-	 *            , Liste des fichiers supprimés.
+	 *
+	 * @param deletedFiles , Liste des fichiers supprimés.
 	 */
 	protected void notifyDeletedFiles(Set<File> deletedFiles) {
 		// Clonage de la liste pour éviter les modifications concurantes
-		Set<IWatchableDirectoryObserver> clonedList = this.mObservers;
+		Set<IWatchableDirectoryObserver> clonedList = new HashSet<>(this.mObservers);
 
 		// Parcours de la liste des observeurs pour notification
 		for (IWatchableDirectoryObserver observer : clonedList) {
@@ -319,13 +306,12 @@ public class WatchableDirectory implements IWatchableDirectory {
 
 	/**
 	 * Notification de la liste des fichiers modifiés dans le répertoire.
-	 * 
-	 * @param modifiedFiles
-	 *            , Liste des fichiers modifiés.
+	 *
+	 * @param modifiedFiles , Liste des fichiers modifiés.
 	 */
 	protected void notifyModifiedFiles(Set<File> modifiedFiles) {
 		// Clonage de la liste pour éviter les modifications concurantes
-		Set<IWatchableDirectoryObserver> clonedList = this.mObservers;
+		Set<IWatchableDirectoryObserver> clonedList = new HashSet<>(this.mObservers);
 
 		// Parcours de la liste des observeurs pour notification
 		for (IWatchableDirectoryObserver observer : clonedList) {

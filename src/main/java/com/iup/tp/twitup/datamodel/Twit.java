@@ -1,12 +1,10 @@
 package com.iup.tp.twitup.datamodel;
 
+import com.iup.tp.twitup.common.Constants;
+
 import java.util.HashSet;
 import java.util.Set;
 import java.util.UUID;
-
-import javax.naming.ldap.HasControls;
-
-import com.iup.tp.twitup.common.Constants;
 
 /**
  * Classe du modèle représentant un twit.
@@ -67,11 +65,11 @@ public class Twit {
 		mTwiter = twiter;
 		mEmissionDate = emissionDate;
 		mText = text;
-		mTags = new HashSet<String>();
-		mUserTags = new HashSet<String>();
+		mTags = new HashSet<>();
+		mUserTags = new HashSet<>();
 
 		// Initialisation des mots-cl�s
-		this.initTags(new String(mText));
+		this.initTags(mText);
 	}
 
 	/**
@@ -95,7 +93,7 @@ public class Twit {
 	 * @param tagDelimiter , Caractère de délimitation des tags à rechercher.
 	 */
 	protected Set<String> extractTags(String text, String tagDelimiter) {
-		Set<String> tags = new HashSet<String>();
+		Set<String> tags = new HashSet<>();
 
 		// Ajout d'un caractère spécial pour reconnaitre les éléments
 		// réellement
@@ -115,7 +113,7 @@ public class Twit {
 				String newTag = taggedString.split(" ")[0];
 
 				// Suppression du caractère sp�cial
-				newTag = newTag.substring(1, newTag.length());
+				newTag = newTag.substring(1);
 
 				// Ajout du tag à la liste
 				tags.add(newTag);
@@ -159,7 +157,7 @@ public class Twit {
 	 * {@link Constants#WORD_TAG_DELIMITER}</i>
 	 */
 	public Set<String> getTags() {
-		return new HashSet<String>(mTags);
+		return new HashSet<>(mTags);
 	}
 
 	/**
@@ -168,7 +166,7 @@ public class Twit {
 	 * {@link Constants#USER_TAG_DELIMITER}</i>
 	 */
 	public Set<String> getUserTags() {
-		return new HashSet<String>(mUserTags);
+		return new HashSet<>(mUserTags);
 	}
 
 	/**
@@ -209,11 +207,9 @@ public class Twit {
 	public boolean equals(Object other) {
 		boolean equals = false;
 
-		if (other != null) {
-			if (other instanceof Twit) {
-				Twit otherTwit = (Twit) other;
-				equals = (this.getUuid().equals(otherTwit.getUuid()));
-			}
+		if (other instanceof Twit) {
+			Twit otherTwit = (Twit) other;
+			equals = (this.getUuid().equals(otherTwit.getUuid()));
 		}
 
 		return equals;
@@ -224,16 +220,12 @@ public class Twit {
 	 */
 	@Override
 	public String toString() {
-		StringBuffer sb = new StringBuffer();
-
-		sb.append("[");
-		sb.append(this.getClass().getName());
-		sb.append("] : ");
-		sb.append(this.getUuid());
-		sb.append(" {");
-		sb.append(this.getText());
-		sb.append("}");
-
-		return sb.toString();
+		return "[" +
+				this.getClass().getName() +
+				"] : " +
+				this.getUuid() +
+				" {" +
+				this.getText() +
+				"}";
 	}
 }

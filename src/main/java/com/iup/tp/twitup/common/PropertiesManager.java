@@ -9,10 +9,15 @@ import java.util.Properties;
 /**
  * Classe utilitaire de gestion du chargement et de la sauvegarde des
  * configuration.
- * 
+ *
  * @author S.Lucas
  */
 public class PropertiesManager {
+
+	private PropertiesManager() {
+
+	}
+
 	/**
 	 * Chargement des propriétés de configuration de l'application (depuis un
 	 * éventuel fichier de configuration).
@@ -45,11 +50,9 @@ public class PropertiesManager {
 
 	/**
 	 * Ecriture du fichier de configuration.
-	 * 
-	 * @param properties
-	 *            , Configurations enregistrées?§
-	 * @param configurationFilePath
-	 *            , Chemin du fichier de configuration à écrire.
+	 *
+	 * @param properties            , Configurations enregistrées?§
+	 * @param configurationFilePath , Chemin du fichier de configuration à écrire.
 	 */
 	public static void writeProperties(Properties properties, String configurationFilePath) {
 		if (properties != null) {

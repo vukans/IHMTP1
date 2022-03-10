@@ -1,18 +1,20 @@
 package com.iup.tp.twitup.core;
 
-import com.iup.tp.twitup.datamodel.ConnectedUserModel;
+import com.iup.tp.twitup.controller.FollowController;
+import com.iup.tp.twitup.controller.ProfilsController;
+import com.iup.tp.twitup.controller.SessionController;
+import com.iup.tp.twitup.controller.TwitsController;
 import com.iup.tp.twitup.datamodel.Database;
 import com.iup.tp.twitup.datamodel.IDatabase;
 import com.iup.tp.twitup.datamodel.User;
 import com.iup.tp.twitup.events.file.IWatchableDirectory;
 import com.iup.tp.twitup.events.file.WatchableDirectory;
-import com.iup.tp.twitup.ihm.*;
-import com.iup.tp.twitup.ihm.mock.TwitupMock;
-import com.iup.tp.twitup.observer.navigation.INavigationObserver;
-import com.iup.tp.twitup.observer.profiles.IProfilesObserver;
-import com.iup.tp.twitup.observer.session.ILoggedInObserver;
-import com.iup.tp.twitup.observer.session.ILoggedOutObserver;
-import com.iup.tp.twitup.observer.session.ISessionObserver;
+import com.iup.tp.twitup.interfaces.navigation.INavigationObserver;
+import com.iup.tp.twitup.interfaces.session.ILoggedInObserver;
+import com.iup.tp.twitup.interfaces.session.ILoggedOutObserver;
+import com.iup.tp.twitup.model.UserModel;
+import com.iup.tp.twitup.view.*;
+import com.iup.tp.twitup.view.mock.TwitupMock;
 
 import javax.swing.*;
 import java.io.File;
@@ -113,8 +115,7 @@ public class Twitup implements INavigationObserver, ILoggedInObserver, ILoggedOu
 	 * pouvoir utiliser l'application</b>
 	 */
 	protected void initDirectory() {
-		//String folder = this.mMainView.askDirectory();
-		this.initDirectory("C:\\Users\\Quentin\\Documents\\Twittup");
+		this.initDirectory(this.mMainView.askDirectory());
 	}
 
 	/**
@@ -148,7 +149,7 @@ public class Twitup implements INavigationObserver, ILoggedInObserver, ILoggedOu
 	/**
 	 * Initialisation du répertoire d'échange.
 	 *
-	 * @param directoryPath
+	 * @param directoryPath directoryPath
 	 */
 	public void initDirectory(String directoryPath) {
 		mExchangeDirectoryPath = directoryPath;
@@ -164,62 +165,104 @@ public class Twitup implements INavigationObserver, ILoggedInObserver, ILoggedOu
 	}
 
 	@Override
-	public void loadWelcomeView() {
+	public void doSetWelcomeView() {
 		loadView(new WelcomeView());
 	}
 
 	@Override
-	public void loadAboutView() {
+	public void doSetAboutView() {
 		loadView(new AboutView());
 	}
 
 	@Override
-	public void loadProfilView() {
-		ProfilView profilView = new ProfilView(connectedUser);
+	public void doSetMyProfilView() {
+
+		UserModel connectedUserModel = new UserModel(connectedUser);
+
+		MyProfilView profilView = new MyProfilView(connectedUserModel);
+
 		loadView(profilView);
 	}
 
 	@Override
-	public void loadSignInView() {
-		ISessionObserver sessionObserver = new SessionController(mEntityManager, mDatabase);
+	public void doSetSignInView() {
+		SessionController sessionController = new SessionController(mEntityManager, mDatabase);
+
 		SignInView signInView = new SignInView();
-		signInView.addSessionObserver(sessionObserver);
+
+		signInView.addSessionObserver(sessionController);
 		signInView.addNavigationObserver(this);
-		sessionObserver.addSignedInObserver(signInView);
-		sessionObserver.addLoggedInObservers(this);
-		sessionObserver.addUserStateObserver(mMainView);
+
+		sessionController.addSignedInObserver(signInView);
+		sessionController.addLoggedInObserver(this);
+		sessionController.addUserStateObserver(mMainView);
+
 		loadView(signInView);
 	}
 
 	@Override
-	public void loadSignUpView() {
-		ISessionObserver sessionObserver = new SessionController(mEntityManager, mDatabase);
+	public void doSetSignUpView() {
+		SessionController sessionController = new SessionController(mEntityManager, mDatabase);
+
 		SignUpView signUpView = new SignUpView();
-		signUpView.addSessionObserver(sessionObserver);
-		sessionObserver.addSignedUpObserver(signUpView);
-		sessionObserver.addUserStateObserver(mMainView);
+
+		signUpView.addSessionObserver(sessionController);
+
+		sessionController.addSignedUpObserver(signUpView);
+		sessionController.addUserStateObserver(mMainView);
+
 		loadView(signUpView);
 	}
 
 	@Override
-	public void loadDisconnectView() {
-		ISessionObserver sessionObserver = new SessionController(mEntityManager, mDatabase);
+	public void doSetLogOutView() {
+		SessionController sessionController = new SessionController(mEntityManager, mDatabase);
+
 		LogOutView disconnectView = new LogOutView();
+
 		disconnectView.addNavigationObserver(this);
-		disconnectView.addSessionObserver(sessionObserver);
-		sessionObserver.addLoggedOutObserver(this);
-		sessionObserver.addUserStateObserver(mMainView);
+		disconnectView.addSessionObserver(sessionController);
+
+		sessionController.addLoggedOutObserver(this);
+		sessionController.addUserStateObserver(mMainView);
+
 		loadView(disconnectView);
 	}
 
 	@Override
-	public void loadProfilesView() {
-		ConnectedUserModel connectedUserModel = new ConnectedUserModel(connectedUser);
-		IProfilesObserver profilesObserver = new ProfilesViewer(mEntityManager, mDatabase, connectedUserModel);
+	public void doSetProfilesView() {
+		FollowController followController = new FollowController(mEntityManager, mDatabase);
+
+		UserModel connectedUserModel = new UserModel(connectedUser);
+
+		ProfilsController profilesController = new ProfilsController(mDatabase, connectedUserModel);
+
 		ProfilesView profilesView = new ProfilesView();
-		profilesView.addProfilesObserver(profilesObserver);
-		profilesObserver.addGetProfilesObserver(profilesView);
+
+		profilesView.addProfilesObserver(profilesController);
+		profilesView.addFollowObserver(followController);
+
+		profilesController.addGotProfilsObserver(profilesView);
+
+		followController.addFollowActionObserver(profilesView);
+
 		loadView(profilesView);
+	}
+
+	public void doSetTwitsView() {
+		TwitsController twitsController = new TwitsController(mEntityManager, mDatabase);
+
+		UserModel connectedUserModel = new UserModel(connectedUser);
+
+		TwitsView twitsView = new TwitsView(connectedUserModel);
+
+		twitsView.addTwitsObserver(twitsController);
+
+		twitsController.addIGotTwitsObserver(twitsView);
+
+		mDatabase.addIDatabaseTwitsObserver(twitsController);
+
+		loadView(twitsView);
 	}
 
 	private void loadView(ViewBase viewBase) {
@@ -230,8 +273,8 @@ public class Twitup implements INavigationObserver, ILoggedInObserver, ILoggedOu
 	}
 
 	@Override
-	public void notifyLoggedIn(User user) {
-		connectedUser = user;
+	public void notifyLoggedIn(UserModel userModel) {
+		connectedUser = userModel.getUser();
 	}
 
 	@Override
@@ -240,7 +283,7 @@ public class Twitup implements INavigationObserver, ILoggedInObserver, ILoggedOu
 	}
 
 	@Override
-	public void exit() {
+	public void doExitApplication() {
 		System.exit(0);
 	}
 }

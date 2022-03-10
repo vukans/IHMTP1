@@ -1,13 +1,12 @@
 package com.iup.tp.twitup.datamodel.jaxb;
 
-import java.io.FileReader;
-
-import javax.xml.bind.JAXBContext;
-import javax.xml.bind.Unmarshaller;
-
 import com.iup.tp.twitup.common.Constants;
 import com.iup.tp.twitup.datamodel.jaxb.bean.twit.TwitXml;
 import com.iup.tp.twitup.datamodel.jaxb.bean.user.UserXml;
+
+import javax.xml.bind.JAXBContext;
+import javax.xml.bind.Unmarshaller;
+import java.io.FileReader;
 
 /**
  * Classe de lecture des fichiers XML.
@@ -15,6 +14,10 @@ import com.iup.tp.twitup.datamodel.jaxb.bean.user.UserXml;
  * @author S.Lucas
  */
 public class JaxbReader {
+
+	private JaxbReader() {
+
+	}
 
 	protected static final String JAXB_BEAN_ROOT_PACKAGE = "com.iup.tp.twitup.datamodel.jaxb.bean";
 
@@ -25,7 +28,7 @@ public class JaxbReader {
 	/**
 	 * Lecture du fichier XML pour un {@link TwitXml}
 	 *
-	 * @param twitFileName
+	 * @param twitFileName twitFileName
 	 */
 	public static TwitXml readTwit(String twitFileName) {
 		TwitXml twit = null;
@@ -40,7 +43,7 @@ public class JaxbReader {
 	/**
 	 * Lecture du fichier XML pour un {@link UserXml}
 	 *
-	 * @param twitFileName
+	 * @param userFileName userFileName
 	 */
 	public static UserXml readUser(String userFileName) {
 		UserXml user = null;
@@ -55,10 +58,8 @@ public class JaxbReader {
 	/**
 	 * Unmarshalling du fichier XML
 	 *
-	 * @param xmlFileName
-	 *            , Fichier XML à lire
-	 * @param beanPackage
-	 *            , Package contenant les bean JAXB.
+	 * @param xmlFileName , Fichier XML à lire
+	 * @param beanPackage , Package contenant les bean JAXB.
 	 */
 	protected static Object readFile(String xmlFileName, String beanPackage) {
 		Object object = null;

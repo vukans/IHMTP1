@@ -7,14 +7,9 @@
 
 package com.iup.tp.twitup.datamodel.jaxb.bean.user;
 
+import javax.xml.bind.annotation.*;
 import java.util.ArrayList;
 import java.util.List;
-
-import javax.xml.bind.annotation.XmlAccessType;
-import javax.xml.bind.annotation.XmlAccessorType;
-import javax.xml.bind.annotation.XmlElement;
-import javax.xml.bind.annotation.XmlRootElement;
-import javax.xml.bind.annotation.XmlType;
 
 /**
  * <p>
@@ -42,11 +37,9 @@ import javax.xml.bind.annotation.XmlType;
  *   &lt;/complexContent>
  * &lt;/complexType>
  * </pre>
- *
- *
  */
 @XmlAccessorType(XmlAccessType.FIELD)
-@XmlType(name = "UserXml", propOrder = { "id", "userTag", "userPassword", "name", "avatarPath", "follows" })
+@XmlType(name = "UserXml", propOrder = {"id", "userTag", "userPassword", "name", "avatarPath", "follows"})
 @XmlRootElement
 public class UserXml {
 
@@ -67,7 +60,6 @@ public class UserXml {
 	 * Gets the value of the id property.
 	 *
 	 * @return possible object is {@link String }
-	 *
 	 */
 	public String getID() {
 		return id;
@@ -76,9 +68,7 @@ public class UserXml {
 	/**
 	 * Sets the value of the id property.
 	 *
-	 * @param value
-	 *            allowed object is {@link String }
-	 *
+	 * @param value allowed object is {@link String }
 	 */
 	public void setID(String value) {
 		this.id = value;
@@ -88,7 +78,6 @@ public class UserXml {
 	 * Gets the value of the userTag property.
 	 *
 	 * @return possible object is {@link String }
-	 *
 	 */
 	public String getUserTag() {
 		return userTag;
@@ -97,9 +86,7 @@ public class UserXml {
 	/**
 	 * Sets the value of the userTag property.
 	 *
-	 * @param value
-	 *            allowed object is {@link String }
-	 *
+	 * @param value allowed object is {@link String }
 	 */
 	public void setUserTag(String value) {
 		this.userTag = value;
@@ -109,7 +96,6 @@ public class UserXml {
 	 * Gets the value of the userPassword property.
 	 *
 	 * @return possible object is {@link String }
-	 *
 	 */
 	public String getUserPassword() {
 		return userPassword;
@@ -118,9 +104,7 @@ public class UserXml {
 	/**
 	 * Sets the value of the userPassword property.
 	 *
-	 * @param value
-	 *            allowed object is {@link String }
-	 *
+	 * @param value allowed object is {@link String }
 	 */
 	public void setUserPassword(String value) {
 		this.userPassword = value;
@@ -130,7 +114,6 @@ public class UserXml {
 	 * Gets the value of the name property.
 	 *
 	 * @return possible object is {@link String }
-	 *
 	 */
 	public String getName() {
 		return name;
@@ -139,9 +122,7 @@ public class UserXml {
 	/**
 	 * Sets the value of the name property.
 	 *
-	 * @param value
-	 *            allowed object is {@link String }
-	 *
+	 * @param value allowed object is {@link String }
 	 */
 	public void setName(String value) {
 		this.name = value;
@@ -151,7 +132,6 @@ public class UserXml {
 	 * Gets the value of the avatarPath property.
 	 *
 	 * @return possible object is {@link String }
-	 *
 	 */
 	public String getAvatarPath() {
 		return avatarPath;
@@ -160,9 +140,7 @@ public class UserXml {
 	/**
 	 * Sets the value of the avatarPath property.
 	 *
-	 * @param value
-	 *            allowed object is {@link String }
-	 *
+	 * @param value allowed object is {@link String }
 	 */
 	public void setAvatarPath(String value) {
 		this.avatarPath = value;
@@ -187,12 +165,10 @@ public class UserXml {
 	 *
 	 * <p>
 	 * Objects of the following type(s) are allowed in the list {@link String }
-	 *
-	 *
 	 */
 	public List<String> getFollows() {
 		if (follows == null) {
-			follows = new ArrayList<String>();
+			follows = new ArrayList<>();
 		}
 		return this.follows;
 	}

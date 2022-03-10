@@ -1,0 +1,15 @@
+
+@
+java:S1181""%Catch Exception instead of Throwable.(•”ø¾øÿÿÿÿ
+M	java:S106#"9Replace this use of System.out or System.err by a logger.(ôšÀj
+N	java:S106*"9Replace this use of System.out or System.err by a logger.(‰³™ë
+E
+java:S2093"*Change this "try" to a try-with-resources.(¡»¢üùÿÿÿÿ
+@
+java:S1181?"%Catch Exception instead of Throwable.(•”ø¾øÿÿÿÿ
+S	java:S106@"9Replace this use of System.out or System.err by a logger.(óÔ¶ôüÿÿÿÿ
+@
+java:S1181F"%Catch Exception instead of Throwable.(‡˜ÚÚøÿÿÿÿ
+N	java:S106G"9Replace this use of System.out or System.err by a logger.(‰³™ë
+E
+java:S2093<"*Change this "try" to a try-with-resources.(¡»¢üùÿÿÿÿ
